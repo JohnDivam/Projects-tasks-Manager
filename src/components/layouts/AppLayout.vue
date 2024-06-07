@@ -1,17 +1,17 @@
 <template>
     <div class="AppLayout">
         <AppNavbar />
-        <main>
+        <main class="main">
           <slot></slot>
         </main>
         <footer>
           <div class="container">
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <p>&copy; 2024 Task Management. All rights reserved.</p>
-        </div>
-      </div>
-    </div>
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <p>&copy; 2024 Task Management. All rights reserved.</p>
+              </div>
+            </div>
+          </div>
         </footer>
     </div>
 </template>
@@ -33,8 +33,5 @@ export default {
 footer {
   background-color: #f8f9fa;
   padding: 20px 0;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
 }
 </style>
