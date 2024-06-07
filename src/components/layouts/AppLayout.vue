@@ -8,7 +8,7 @@
           <div class="container">
             <div class="row">
               <div class="col-md-12 text-center">
-                <p>&copy; 2024 Task Management. All rights reserved.</p>
+                <p>&copy; 2024 All rights reserved.</p>
               </div>
             </div>
           </div>
