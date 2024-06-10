@@ -58,7 +58,7 @@
 
 import AppLayout from '../../layouts/AppLayout.vue';
 import { computed, reactive, ref, getCurrentInstance, watchEffect } from "vue";
-import { clientLogin } from "../../../services/AuthService";
+import { userLogin } from "../../../services/AuthService";
 import { required,  password, email} from "../../../Mixins/Helpers/Helper.js";
 
 export default {
@@ -84,7 +84,7 @@ export default {
         
         const login = async() => {
            if (isPending.value) return;
-            clientLogin(loginForm, isPending, root)
+            userLogin(loginForm, isPending, root)
         };
 
         return {
