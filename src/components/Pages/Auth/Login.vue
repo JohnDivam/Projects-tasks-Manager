@@ -76,8 +76,8 @@ export default {
 
         const isPending = ref(false);
         const loginForm  = reactive({
-            email:'',
-            password:'',
+            email:'aedaed@aedaed.com',
+            password:'aedaed@aedaed.com',
             showPass: false
         });
 

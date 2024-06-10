@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './axios'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
@@ -6,14 +6,13 @@ export async function userLogin(form, isPending, root){
     isPending.value = true;
 
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/login',{
+        const response = await axios.post('/login', {
             'email':form.email,
             'password':form.password,
         });
         
         if (response.status === 200) {
-            const token = response.data.token;
-            localStorage.setItem('token', token); // Store the token in localStorage
+            localStorage.setItem('token', response.data.token); 
 
             toast.success(response.data.message, {
                 position: "top-right",

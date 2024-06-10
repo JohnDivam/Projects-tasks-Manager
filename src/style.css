@@ -5,8 +5,6 @@
     padding-top: 50px;
     padding-bottom: 50px;
 }
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
-
 :root {
     --links: #a9455b;
     --btnBackground: #F97794;
@@ -25,7 +23,6 @@ html,body{
     padding: 15px 0 !important;
 }
 .navbar-brand{
-    font-family: 'Dancing Script', cursive;
     font-size: 25px !important;
 }
 .navbar-brand img{
