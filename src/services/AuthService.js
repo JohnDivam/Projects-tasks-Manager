@@ -20,7 +20,8 @@ export async function userLogin(form, isPending, root){
             });
 
             setTimeout(() => {
-                window.location.href = "/user/home";
+                const redirect = root.$route.query.redirect || '/user/home';
+                root.$router.push(redirect);
             }, 2000);
         }else{
             console.log(response.status);
