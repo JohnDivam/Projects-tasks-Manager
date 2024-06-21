@@ -13,6 +13,7 @@ export async function userLogin(form, isPending, root){
         
         if (response.status === 200) {
             localStorage.setItem('token', response.data.token); 
+            root.$store.commit('userModule/setUser', response.data.user);
 
             toast.success(response.data.message, {
                 position: "top-right",
@@ -23,11 +24,10 @@ export async function userLogin(form, isPending, root){
                 const redirect = root.$route.query.redirect || '/user/home';
                 root.$router.push(redirect);
             }, 2000);
-        }else{
-            console.log(response.status);
         }
 
     } catch (error) {
+        console.log(error);
         if (error.response) {
             const response = error.response;
             if (response.status === 401 || response.data.message) {
