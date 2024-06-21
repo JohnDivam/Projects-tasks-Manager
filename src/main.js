@@ -8,6 +8,7 @@ import * as directives from 'vuetify/directives'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import routers from './routers'
+import store from './store';
 
 const vuetify = createVuetify({
     components,
@@ -16,5 +17,6 @@ const vuetify = createVuetify({
 
 app = createApp(App);
 app.use(vuetify);
+app.use(store);
 app.use(routers);
 app.mount('#app');
