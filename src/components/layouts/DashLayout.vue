@@ -27,13 +27,15 @@
         </nav>
 
         <main class="main">
-          <slot></slot>
+          <div class="yield-content">
+            <slot></slot>
+          </div>
         </main>
         <footer>
           <div class="container">
             <div class="row">
               <div class="col-md-12 text-center">
-                <p>&copy; 2024 All rights reserved.</p>
+                <p>&copy; 2024 All rights reserved. </p>
               </div>
             </div>
           </div>
