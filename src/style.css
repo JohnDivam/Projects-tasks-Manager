@@ -89,3 +89,61 @@ html,body{
     background-color: var(--btnBackground) !important;
     color: #fff !important;
 }
+.analyseItem{
+    padding: 30px 35px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.homePanel{
+    margin-top: 40px;
+}
+.homePanel .links{
+    text-align: left;   
+}
+.homePanel .links li a{
+    display: block;
+    padding: 10px 18px;
+    margin-bottom: 7px;
+    color: #333;
+    border-radius: 12px;
+}
+.homePanel .links li a:hover, .homePanel .links li.active a{
+    background-color: #fff;
+}
+.mx-130px{
+    width: 130px;
+  display: inline-block;
+}
+.btn-site{
+    background-color: #827E4A;
+    color: #fff;
+}
+
+.form-group{
+    margin-bottom: 25px;
+}
+.mw-150px{
+    max-width: 150px;
+    display: inline-block;
+}
+.yield-content{
+    background: #f5f5f5;
+    padding: 50px 0;
+    min-height: 68vh;
+}
+.footer{
+    background-color: #e5e5e5;
+    padding: 50px 0;
+    text-align: center;
+}
+
+@media (max-width:767px) {
+    .homePanel .links li a{
+        border: 1px solid #dcdcdc;
+        border-radius: 12px;
+    }
+  
+
+}
