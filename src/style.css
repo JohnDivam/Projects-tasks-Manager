@@ -106,11 +106,18 @@ html,body{
     display: block;
     padding: 10px 18px;
     margin-bottom: 7px;
-    color: #333;
-    border-radius: 12px;
+    color: #fff !important;
+    background-color: #98b378;
+    border-top-right-radius: 12px;
+    text-decoration: none;
+}
+.homePanel .links li{
+    transition: 0.7s ease;
 }
 .homePanel .links li a:hover, .homePanel .links li.active a{
     background-color: #fff;
+    color: #98b378 !important;
+    border: 1px solid #98b378;
 }
 .mx-130px{
     width: 130px;
@@ -137,6 +144,9 @@ html,body{
     background-color: #e5e5e5;
     padding: 50px 0;
     text-align: center;
+}
+.btn-success{
+    color: #fff !important;
 }
 
 @media (max-width:767px) {

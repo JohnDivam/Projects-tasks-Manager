@@ -38,7 +38,22 @@
                 <ul class="list-unstyled px-0 links">
                     <li class="active">
                         <a href="#">
+                           Tasks In Backlog 
+                        </a>
+                    </li>
+                    <li >
+                        <a href="#">
                             Tasks In Progess
+                        </a>
+                    </li>
+                    <li >
+                        <a href="#">
+                            Ready For Testing
+                        </a>
+                    </li>
+                    <li >
+                        <a href="#">
+                            Tasks In Testing
                         </a>
                     </li>
                     <li>
@@ -48,12 +63,7 @@
                     </li>
                      <li>
                         <a href="#">
-                           Tasks In Waiting
-                        </a>
-                    </li>
-                     <li>
-                        <a href="#">
-                           Tasks Completed
+                           Tasks Approved 
                         </a>
                     </li>
                     

@@ -1,0 +1,151 @@
+<template>
+    <DashLayout page-title="Create task">
+    
+<div class="container">
+    <div class="card">
+      <div class="card-header"> 
+          <span>Create Task</span> 
+          <router-link  to="/user/home" class="btn btn-sm btn-secondary text-white float-right">Back</router-link>
+      </div>
+      <div class="card-body">
+          <form @submit.prevent="createTask">
+            <v-select
+                v-model="formData.project_id"
+                :items="projects"
+                label="Select a project"
+                item-title="name"
+                item-value="id"
+                outlined
+                dense
+            ></v-select>
+
+            <v-text-field
+                v-model="formData.name"
+                label="Task Name"
+                required
+                outlined
+                dense
+            ></v-text-field>
+
+            <v-textarea
+            v-model="formData.description"
+                label="Task Description"
+                required
+                outlined
+                dense
+            ></v-textarea>
+
+
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="formData.hours"
+                  label="Hour"
+                  type="number"
+                  min="0"
+                  max="23"
+                  outlined
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  v-model="formData.minutes"
+                  label="Minute"
+                  type="number"
+                  min="0"
+                  max="59"
+                  outlined
+                ></v-text-field>
+              </v-col>
+            </v-row>            
+
+
+            <v-select
+              v-model="formData.type"
+              :items="taskTypes"
+              label="Task Type"
+              required
+              outlined
+              dense
+            ></v-select>
+
+            <v-select
+              v-model="formData.priority"
+              :items="priorities"
+              label="Task Priority"
+              required
+              outlined
+              dense
+            ></v-select>
+
+       
+            <v-btn type="submit" :disabled="isPending" color="success" block>Create Task</v-btn>
+
+          </form>
+      </div>
+    </div>
+</div>
+
+
+    </DashLayout>
+</template>
+
+<script>
+import DashLayout from '../../layouts/DashLayout.vue';
+import { computed, ref, getCurrentInstance, onMounted, watch  } from "vue";
+import { getProjects } from "../../../services/ProjectService";
+import { storeTask } from "../../../services/TaskService";
+export default {
+    components:{
+        DashLayout
+    },
+    setup() {
+    const root = getCurrentInstance().proxy;
+    const selectedProject = ref(null);
+    const projects = ref([]);
+    const isPending = ref(false);
+    const formData = ref({
+      name: '',
+      project_id: null,
+      description: '',
+      type: 'Feature',
+      priority: 'Normal',
+      hours: null,
+      minutes: null,
+    });
+    const taskTypes = ref(["Bug", "Feature"]);
+    const priorities = ref(["Low", "Normal", "High", "Urgent", "Critical"]);
+
+    const fetchProjects = async() => {
+      try {
+        await getProjects(isPending, projects, root);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    }
+
+   const createTask = async () => {
+      try {
+        await storeTask(isPending, formData.value, root);
+      } catch (error) {
+        console.error('Error creating task:', error);
+      } 
+    };
+
+    onMounted(async () => {
+        await fetchProjects();
+    });
+
+
+    return {
+        selectedProject,
+        projects,
+        isPending,
+        formData,
+        createTask,
+        priorities,
+        taskTypes
+        };
+    }
+}
+</script>
