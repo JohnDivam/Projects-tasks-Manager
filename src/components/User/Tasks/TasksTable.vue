@@ -1,37 +1,55 @@
 <template>
     
-    <v-select
-        v-model="selectedProject"
-        :items="projects"
-        label="Select a project"
-        item-title="name"
-        item-value="id"
-        outlined
-        dense
-        :disabled="isPending"
-    ></v-select>
+  <div class="row">
+    <div class="col-md-3">
+      <v-select
+          v-model="selectedProject"
+          :items="projects"
+          label="Select a project"
+          item-title="name"
+          item-value="id"
+          outlined
+          dense
+          :disabled="isPending"
+      ></v-select>
+    </div>
+    <div class="col-md-3">
 
-<div class="table-responsive">
-<table class="table table-boordered table-hover bg-white">
-    <thead>
-        <th>#</th>
-        <th>Title</th>
-        <th>Actions</th>
-    </thead>
-    <tbody>
-        <tr v-if="tasks.length === 0">
-        <td colspan="3" class="text-center">No tasks found</td>
-        </tr>
-        <tr else v-for="(task) in tasks" :key="task.id">
-            <td>{{ task.id }}</td>
-            <td>{{ task.name }}</td> <!-- Adjust 'task.title' to match your task object structure -->
-            <td class="text-center">
-                <a href="#" class="btn btn-sm">Show</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-</div>
+    </div>
+    <div class="col-md-3">
+      
+    </div>
+    <div class="col-md-3 text-right">
+      <router-link  to="/user/tasks/create" class="btn btn-sm btn-success">Create Task</router-link>
+    </div>
+  </div>
+  <!-- end row -->
+  
+  <div class="table-responsive">
+  <table class="table table-boordered table-hover bg-white">
+      <thead>
+          <th>#</th>
+          <th>Name</th>
+          <th>Priority</th>
+          <th>Estimated Time</th>
+          <th>Actions</th>
+      </thead>
+      <tbody>
+          <tr v-if="tasks.length === 0">
+          <td colspan="3" class="text-center">No tasks found</td>
+          </tr>
+          <tr else v-for="(task) in tasks" :key="task.id">
+              <td>{{ task.id }}</td>
+              <td>{{ task.name }}</td> 
+              <td>{{ task.priority }}</td> 
+              <td>{{ task.estimated_time }}</td> 
+              <td class="text-center">
+                  <router-link :to="'/user/tasks/show/'+task.id"  class="btn btn-sm">Show</router-link>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+  </div>
 
 </template>
 
