@@ -13,9 +13,14 @@
                     <p>{{task.description}}</p>
 
                     <hr>
-                    <a href="#">
-                        document.pdf
-                    </a>
+                    <div v-if="task.files && task.files.length">
+                        <h5>Files: </h5>
+                        <ul class="list-unstyled">
+                            <li v-for="(file, index) in task.files" :key="index">
+                            <a :href="file" target="_blank">{{ getFileName(file) }}</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <ul>
@@ -71,6 +76,10 @@ export default {
         }
 
        
+        const getFileName = (fileUrl) => {
+            return fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
+        };
+
         onMounted(async () => {
             await findTask();
         });
@@ -78,7 +87,8 @@ export default {
         return {
             isPending,
             task,
-            findTask
+            findTask,
+            getFileName
         };
     }
 }
