@@ -36,7 +36,7 @@
       </thead>
       <tbody>
           <tr v-if="tasks.length === 0">
-          <td colspan="3" class="text-center">No tasks found</td>
+          <td colspan="5" class="text-center">No tasks found</td>
           </tr>
           <tr else v-for="(task) in tasks" :key="task.id">
               <td>{{ task.id }}</td>

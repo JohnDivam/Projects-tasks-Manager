@@ -78,6 +78,15 @@
               dense
             ></v-select>
 
+
+               <v-file-input
+                v-model="formData.files"
+                label="Upload Files"
+                multiple
+                outlined
+                dense
+              ></v-file-input>
+
        
             <v-btn type="submit" :disabled="isPending" color="success" block>Create Task</v-btn>
 
@@ -112,6 +121,7 @@ export default {
       priority: 'Normal',
       hours: null,
       minutes: null,
+      files: null,  
     });
     const taskTypes = ref(["Bug", "Feature"]);
     const priorities = ref(["Low", "Normal", "High", "Urgent", "Critical"]);

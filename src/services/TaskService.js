@@ -55,7 +55,22 @@ export async function storeTask(isPending, taskData, root){
     isPending.value = true;
 
     try {
-        const response = await axios.post('/tasks',taskData);
+        const formData = new FormData();
+        for (const key in taskData) {
+          if (key === 'files' && taskData[key]) {
+            for (let i = 0; i < taskData[key].length; i++) {
+              formData.append('files[]', taskData[key][i]);
+            }
+          } else {
+            formData.append(key, taskData[key]);
+          }
+        }
+        
+        const response = await axios.post('/tasks', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
         
         if (response.status === 200 && response.data.status == true) {
             toast.success(response.data.message, {
