@@ -32,6 +32,7 @@
           <th>Name</th>
           <th>Priority</th>
           <th>Estimated Time</th>
+          <th>Status</th>
           <th>Actions</th>
       </thead>
       <tbody>
@@ -43,6 +44,7 @@
               <td>{{ task.name }}</td> 
               <td>{{ task.priority }}</td> 
               <td>{{ task.estimated_time }}</td> 
+              <td>{{ task.status.status }}</td> 
               <td class="text-center">
                   <router-link :to="'/user/tasks/show/'+task.id"  class="btn btn-sm">Show</router-link>
               </td>

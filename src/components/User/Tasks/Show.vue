@@ -3,9 +3,14 @@
     
 <div class="container">
     <div class="card">
-      <div class="card-header"> 
-          <span>{{ task.name }}</span> 
-          <router-link  to="/user/home" class="btn btn-sm btn-secondary text-white float-right">Back</router-link>
+      <div class="card-header d-flex"> 
+        <span>{{ task.name }}</span> 
+        <div class="ml-auto d-flex align-items-center">
+            <select name="status" class="form-control mr-3" @change="handleStatusChange($event)">
+                <option v-for="status in task.available_statuses" :key="status" :value="status"  :selected="status === task.status">{{status}}</option>
+            </select>
+            <router-link  to="/user/home" class="btn btn-sm btn-secondary text-white float-right">Back</router-link>
+        </div>
       </div>
       <div class="card-body">
             <div class="row">
@@ -50,8 +55,9 @@
 <script>
 import DashLayout from '../../layouts/DashLayout.vue';
 import { computed, ref, getCurrentInstance, onMounted, watch  } from "vue";
-import { getTask } from "../../../services/TaskService";
 import { useRoute } from 'vue-router';
+import { getTask } from "../../../services/TaskService";
+import { updateStatus } from "../../../services/TaskService";
 
 export default {
     components:{
@@ -80,6 +86,17 @@ export default {
             return fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
         };
 
+        const handleStatusChange = async(event) => {
+             try {
+                isPending.value = true;
+                task.status = await updateStatus(route.params.id, event.target.value);
+            } catch (error) {
+                console.error('Error update status:', error);
+            } finally {
+                isPending.value = false;
+            }
+        };
+
         onMounted(async () => {
             await findTask();
         });
@@ -88,7 +105,8 @@ export default {
             isPending,
             task,
             findTask,
-            getFileName
+            getFileName,
+            handleStatusChange
         };
     }
 }
