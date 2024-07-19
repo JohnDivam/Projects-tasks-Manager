@@ -32,17 +32,19 @@
           <th>Name</th>
           <th>Priority</th>
           <th>Estimated Time</th>
+          <th>Status</th>
           <th>Actions</th>
       </thead>
       <tbody>
           <tr v-if="tasks.length === 0">
-          <td colspan="3" class="text-center">No tasks found</td>
+          <td colspan="5" class="text-center">No tasks found</td>
           </tr>
           <tr else v-for="(task) in tasks" :key="task.id">
               <td>{{ task.id }}</td>
               <td>{{ task.name }}</td> 
               <td>{{ task.priority }}</td> 
               <td>{{ task.estimated_time }}</td> 
+              <td>{{ task.status.status }}</td> 
               <td class="text-center">
                   <router-link :to="'/user/tasks/show/'+task.id"  class="btn btn-sm">Show</router-link>
               </td>
