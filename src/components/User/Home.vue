@@ -36,37 +36,14 @@
             <div class="col-md-3">
                 <!-- links -->
                 <ul class="list-unstyled px-0 links">
-                    <li class="active">
-                        <a href="#">
-                           Tasks In Backlog 
-                        </a>
+                    <li :class="{active: currentStatus == ''}">
+                        <router-link to="/user/home?status=">
+                           All Tasks 
+                        </router-link>
                     </li>
-                    <li >
-                        <a href="#">
-                            Tasks In Progess
-                        </a>
+                    <li v-for="status in statuses" :key="status" :class="{ active: currentStatus === status }" >
+                        <router-link :to="`/user/home?status=${status}`">Tasks In {{ status }}</router-link>
                     </li>
-                    <li >
-                        <a href="#">
-                            Ready For Testing
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#">
-                            Tasks In Testing
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                           Tasks Disapproved
-                        </a>
-                    </li>
-                     <li>
-                        <a href="#">
-                           Tasks Approved 
-                        </a>
-                    </li>
-                    
                 </ul>
                 <!-- end links -->
             </div>
@@ -85,7 +62,7 @@
 <script>
 
 import DashLayout from '../layouts/DashLayout.vue';
-import { computed } from "vue";
+import { getCurrentInstance, computed } from "vue"
 import { useStore } from "vuex";
 import TasksTable from   './Tasks/TasksTable.vue'
 export default {
@@ -94,10 +71,23 @@ export default {
         TasksTable
     },
     setup() {
+        const root = getCurrentInstance().proxy;
         const store = useStore();
+        const statuses = [
+            'Backlog',
+            'Progress',
+            'ReadyForTesting',
+            'Testing',
+            'Disapproved',
+            'Approved'
+        ];
         
+        const currentStatus = computed(() => root.$route.query.status || "");
+
         return {
             user: computed(() => store.getters['userModule/getUser']),
+            statuses,
+            currentStatus,
         }
     },
 }

@@ -6,7 +6,8 @@ export async function getTasks(tasks, selectedProject, root){
     try {
         const response = await axios.get('/tasks',{
             params: {
-                'project_id': selectedProject.value
+                'project_id': selectedProject.value,
+                'status': root.$route.query.status
             }
         });
         
