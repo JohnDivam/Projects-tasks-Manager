@@ -91,6 +91,8 @@ export default {
 
     watch(selectedProject, (newValue) => fetchTasks())
 
+    watch(() => root.$route.query.status,(newStatus) => fetchTasks());
+
     return {
         selectedProject,
         projects,
