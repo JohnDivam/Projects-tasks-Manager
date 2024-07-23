@@ -6,8 +6,12 @@
       <div class="card-header d-flex"> 
         <span>{{ task.name }}</span> 
         <div class="ml-auto d-flex align-items-center">
-            <select name="status" class="form-control mr-3" @change="handleStatusChange($event)">
+            <select class="form-control mr-3" @change="handleStatusChange($event)">
                 <option v-for="status in task.available_statuses" :key="status" :value="status"  :selected="status === task.status">{{status}}</option>
+            </select>
+            <select class="form-control mr-3" @change="handleAssignToChange($event)">
+                <option value="" selected disabled>Assign to: </option>
+                <option v-for="employee in employees" :key="employee.id" :value="employee.id" :selected="employee.id === task.assign_employee_id"  >{{employee.name}}</option>
             </select>
             <router-link  to="/user/home" class="btn btn-sm btn-secondary text-white float-right">Back</router-link>
         </div>
@@ -56,8 +60,7 @@
 import DashLayout from '../../layouts/DashLayout.vue';
 import { computed, ref, getCurrentInstance, onMounted, watch  } from "vue";
 import { useRoute } from 'vue-router';
-import { getTask } from "../../../services/TaskService";
-import { updateStatus } from "../../../services/TaskService";
+import { getTask, updateStatus, assignTaskTo } from "../../../services/TaskService";
 
 export default {
     components:{
@@ -68,12 +71,14 @@ export default {
         const isPending = ref(false);
         const task = ref({});
         const route = useRoute();
-
+        const employees = ref([]);
+ 
         const findTask = async() => {
             try {
                 isPending.value = true;
                 const taskData = await getTask(route.params.id);
-                task.value = taskData;
+                task.value = taskData.task;
+                employees.value = taskData.employees;
             } catch (error) {
                 console.error('Error find task:', error);
             } finally {
@@ -97,6 +102,19 @@ export default {
             }
         };
 
+        
+        const handleAssignToChange = async(event) => {
+             try {
+                isPending.value = true;
+                task.assign_employee_id = await assignTaskTo(route.params.id, event.target.value);
+            } catch (error) {
+                console.error('Error update status:', error);
+            } finally {
+                isPending.value = false;
+            }
+        };
+
+
         onMounted(async () => {
             await findTask();
         });
@@ -106,7 +124,9 @@ export default {
             task,
             findTask,
             getFileName,
-            handleStatusChange
+            handleStatusChange,
+            employees,
+            handleAssignToChange
         };
     }
 }

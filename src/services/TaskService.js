@@ -131,7 +131,7 @@ export async function getTask(id){
         const response = await axios.get('/tasks/'+id);
         
         if (response.status === 200) {
-            return response.data.task;
+            return response.data;
         }
 
     } catch (error) {
@@ -224,5 +224,60 @@ export async function updateStatus(task_id,new_status){
     
     
 }
+
+
+export async function assignTaskTo(task_id, employee_id){
+    try {
+       
+        const response = await axios.post('/tasks/assignTo/'+task_id,{
+            'employee_id': employee_id
+        });
+        
+        if (response.status === 200 && response.data.status == true) {
+            toast.success(response.data.message, {
+                position: "top-right",
+                autoClose: 2000,
+            });
+
+            return response.data.assign_employee_id
+        }
+
+    } catch (error) {
+        console.log(error);
+        if (error.response) {
+            const response = error.response;
+            if (response.status === 401 || response.data.message) {
+                toast.error(response.data.message, {
+                    position: "top-right",
+                    autoClose: 3000,
+                });
+            } else if (response.status === 422) {
+                for (let i in response.data.errors) {
+                    toast.warning(response.data.errors[i][0], {
+                        position: "top-right",
+                        autoClose: 3000,
+                    });
+                }
+            } else {
+                toast.error("Something went wrong! Please try again.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                });
+            }
+        } else if (error.request) {
+            toast.error("No response from the server. Please try again.", {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        } else {
+            toast.error("An error occurred. Please try again.", {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        }
+    } 
+}
+
+
 
 
