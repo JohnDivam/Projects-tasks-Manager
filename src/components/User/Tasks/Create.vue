@@ -9,24 +9,28 @@
       </div>
       <div class="card-body">
           <form @submit.prevent="createTask">
-            <v-select
-                v-model="formData.project_id"
-                :items="projects"
-                label="Select a project"
-                item-title="name"
-                item-value="id"
-                outlined
-                dense
-            ></v-select>
-
-            <v-text-field
-                v-model="formData.name"
-                label="Task Name"
-                required
-                outlined
-                dense
-            ></v-text-field>
-
+           <div class="row">
+            <div class="col-md-4">
+               <v-select
+                  v-model="formData.project_id"
+                  :items="projects"
+                  label="Select a project"
+                  item-title="name"
+                  item-value="id"
+                  outlined
+                  dense
+              ></v-select>
+            </div>
+            <div class="col-md-8">
+              <v-text-field
+                  v-model="formData.name"
+                  label="Task Name"
+                  required
+                  outlined
+                  dense
+              ></v-text-field>
+            </div>
+           </div>
             <v-textarea
             v-model="formData.description"
                 label="Task Description"
@@ -36,47 +40,58 @@
             ></v-textarea>
 
 
-            <v-row>
-              <v-col>
-                <v-text-field
-                  v-model="formData.hours"
-                  label="Hour"
-                  type="number"
-                  min="0"
-                  max="23"
-                  outlined
-                ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field
-                  v-model="formData.minutes"
-                  label="Minute"
-                  type="number"
-                  min="0"
-                  max="59"
-                  outlined
-                ></v-text-field>
-              </v-col>
-            </v-row>            
+          
 
-
-            <v-select
-              v-model="formData.type"
-              :items="taskTypes"
-              label="Task Type"
-              required
-              outlined
-              dense
-            ></v-select>
-
-            <v-select
-              v-model="formData.priority"
-              :items="priorities"
-              label="Task Priority"
-              required
-              outlined
-              dense
-            ></v-select>
+           <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                  <div class="col">
+                    <v-select
+                      v-model="formData.type"
+                      :items="taskTypes"
+                      label="Task Type"
+                      required
+                      outlined
+                      dense
+                    ></v-select>
+                  </div>
+                  <div class="col">
+                    <v-select
+                      v-model="formData.priority"
+                      :items="priorities"
+                      label="Task Priority"
+                      required
+                      outlined
+                      dense
+                    ></v-select>
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <v-row>
+                  <v-col>
+                    <v-text-field
+                      v-model="formData.hours"
+                      label="Hour"
+                      type="number"
+                      min="0"
+                      max="23"
+                      outlined
+                    ></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field
+                      v-model="formData.minutes"
+                      label="Minute"
+                      type="number"
+                      min="0"
+                      max="59"
+                      outlined
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+            </div>
+           </div>
 
 
                <v-file-input
