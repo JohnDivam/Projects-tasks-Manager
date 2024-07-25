@@ -3,8 +3,8 @@
   <div class="row">
     <div class="col-md-3">
       <v-select
-          v-model="selectedProject"
           :items="projects"
+          v-model="selectedProject"
           label="Select a project"
           item-title="name"
           item-value="id"
@@ -59,14 +59,17 @@
 import { computed, ref, getCurrentInstance, onMounted, watch  } from "vue";
 import { getProjects } from "../../../services/ProjectService";
 import { getTasks } from "../../../services/TaskService";
+import { useRouter, useRoute } from 'vue-router';
 
 export default {
     setup() {
     const root = getCurrentInstance().proxy;
-    const selectedProject = ref(null);
     const projects = ref([]);
     const isPending = ref(false);
     const tasks = ref([]);
+    const route = useRoute();
+    const router = useRouter();
+    const selectedProject = ref(projects.value.find(project => project.id === newValue) || null);
 
     const fetchProjects = async() => {
       try {
@@ -78,7 +81,7 @@ export default {
 
     const fetchTasks = async() => {
       try {
-        await getTasks(tasks, selectedProject, root);
+        await getTasks(tasks, root);
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
@@ -89,9 +92,12 @@ export default {
         await fetchTasks();
     });
 
-    watch(selectedProject, (newValue) => fetchTasks())
+    watch(selectedProject, (newValue) => {
+      router.push({ name: 'UserHome', query: {  ...route.query, 'project_id': newValue } });
+    })
 
-    watch(() => root.$route.query.status,(newStatus) => fetchTasks());
+    watch(() => root.$route.query.status,(newValue) => fetchTasks());
+    watch(() => root.$route.query.project_id,(newValue) => fetchTasks());
 
     return {
         selectedProject,

@@ -37,12 +37,12 @@
                 <!-- links -->
                 <ul class="list-unstyled px-0 links">
                     <li :class="{active: currentStatus == ''}">
-                        <router-link to="/user/home?status=">
+                        <router-link  :to="getStatusLink('')">
                            All Tasks 
                         </router-link>
                     </li>
                     <li v-for="status in statuses" :key="status" :class="{ active: currentStatus === status }" >
-                        <router-link :to="`/user/home?status=${status}`">Tasks In {{ status }}</router-link>
+                        <router-link :to="getStatusLink(status)">Tasks In {{ status }}</router-link>
                     </li>
                 </ul>
                 <!-- end links -->
@@ -64,7 +64,9 @@
 import DashLayout from '../layouts/DashLayout.vue';
 import { getCurrentInstance, computed } from "vue"
 import { useStore } from "vuex";
-import TasksTable from   './Tasks/TasksTable.vue'
+import TasksTable from   './Tasks/TasksTable.vue';
+import { useRouter, useRoute } from 'vue-router';
+
 export default {
     components:{
         DashLayout,
@@ -73,6 +75,7 @@ export default {
     setup() {
         const root = getCurrentInstance().proxy;
         const store = useStore();
+        const route = useRoute();
         const statuses = [
             'Backlog',
             'Progress',
@@ -84,10 +87,18 @@ export default {
         
         const currentStatus = computed(() => root.$route.query.status || "");
 
+        const getStatusLink = (status) => {
+            return {
+                name: 'UserHome',
+                query: { ...route.query, status }
+            };
+        };
+
         return {
             user: computed(() => store.getters['userModule/getUser']),
             statuses,
             currentStatus,
+            getStatusLink
         }
     },
 }

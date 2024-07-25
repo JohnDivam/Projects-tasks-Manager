@@ -2,11 +2,11 @@ import axios from './axios'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-export async function getTasks(tasks, selectedProject, root){
+export async function getTasks(tasks, root){
     try {
         const response = await axios.get('/tasks',{
             params: {
-                'project_id': selectedProject.value,
+                'project_id': root.$route.query.project_id,
                 'status': root.$route.query.status
             }
         });

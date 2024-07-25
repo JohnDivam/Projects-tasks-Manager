@@ -12,7 +12,7 @@ const routes = [
         }
       }  
     },
-    { path: '/user/home', component:  () => import("../components/User/Home.vue"), meta: { requiresAuth: true }, },
+    { path: '/user/home', component:  () => import("../components/User/Home.vue") ,  name: 'UserHome', meta: { requiresAuth: true }, },
     { path: '/user/tasks/create', component:  () => import("../components/User/Tasks/Create.vue"), meta: { requiresAuth: true }, },
     { path: '/user/tasks/show/:id', component:  () => import("../components/User/Tasks/Show.vue"), meta: { requiresAuth: true }, },
     
