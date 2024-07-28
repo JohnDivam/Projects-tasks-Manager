@@ -34,18 +34,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <!-- links -->
-                <ul class="list-unstyled px-0 links">
-                    <li :class="{active: currentStatus == ''}">
-                        <router-link  :to="getStatusLink('')">
-                           All Tasks 
-                        </router-link>
-                    </li>
-                    <li v-for="status in statuses" :key="status" :class="{ active: currentStatus === status }" >
-                        <router-link :to="getStatusLink(status)">Tasks In {{ status }}</router-link>
-                    </li>
-                </ul>
-                <!-- end links -->
+                <SideBar :statuses="statuses" :currentStatus="currentStatus" />
             </div>
             <div class="col-md-9">
                 <TasksTable />
@@ -62,6 +51,7 @@
 <script>
 
 import DashLayout from '../layouts/DashLayout.vue';
+import SideBar from './SideBar.vue';
 import { getCurrentInstance, computed } from "vue"
 import { useStore } from "vuex";
 import TasksTable from   './Tasks/TasksTable.vue';
@@ -70,12 +60,12 @@ import { useRouter, useRoute } from 'vue-router';
 export default {
     components:{
         DashLayout,
-        TasksTable
+        TasksTable,
+        SideBar
     },
     setup() {
         const root = getCurrentInstance().proxy;
         const store = useStore();
-        const route = useRoute();
         const statuses = [
             'Backlog',
             'Progress',
@@ -87,18 +77,12 @@ export default {
         
         const currentStatus = computed(() => root.$route.query.status || "");
 
-        const getStatusLink = (status) => {
-            return {
-                name: 'UserHome',
-                query: { ...route.query, status }
-            };
-        };
+      
 
         return {
             user: computed(() => store.getters['userModule/getUser']),
             statuses,
             currentStatus,
-            getStatusLink
         }
     },
 }
