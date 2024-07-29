@@ -2,13 +2,13 @@
 <!-- links -->
     <ul class="list-unstyled px-0 links">
     <li>
-        <router-link to="/admin/users"> Users  </router-link>
+        <router-link to="/admin/employees"> Employees  </router-link>
     </li>
     <li>
-        <router-link to="/admin/users"> Projects  </router-link>
+        <router-link to="/admin/employees"> Projects  </router-link>
     </li>
     <li>
-        <router-link to="/admin/users"> Permissions  </router-link>
+        <router-link to="/admin/employees"> Permissions  </router-link>
     </li>
 
     <li>
