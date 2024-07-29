@@ -8,28 +8,29 @@
                     <SideBar />
                 </div>
                 <div class="col-md-9">
+                    <div class="text-right">
+                        <router-link to="/admin/employees/create" class="btn btn-success mb-2"> Add </router-link>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-boordered table-hover bg-white">
                             <thead>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>_____</th>
-                                <th>_____</th>
-                                <th>_____</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 <th>Actions</th>
                             </thead>
                             <tbody>
-                                <tr v-if="users.length === 0">
+                                <tr v-if="employees.length === 0">
                                 <td colspan="5" class="text-center">No employees found</td>
                                 </tr>
-                                <tr else v-for="(user) in users" :key="user.id">
-                                    <td>{{ user.id }}</td>
-                                    <td>{{ user.name }}</td> 
-                                    <td>{{ ''}}</td> 
-                                    <td>{{ ''}}</td> 
-                                    <td>{{ ''}}</td> 
+                                <tr else v-for="(employee) in employees" :key="employee.id">
+                                    <td>{{ employee.id }}</td>
+                                    <td>{{ employee.name }}</td> 
+                                    <td>{{ employee.email }}</td> 
+                                    <td>{{ employee.phone }}</td> 
                                     <td class="text-center">
-                                        <router-link :to="'/user/employees/edit/'+user.id"  class="btn btn-sm">Edit</router-link>
+                                        <router-link :to="'/admin/employees/edit/'+employee.id"  class="btn btn-sm">Edit</router-link>
                                     </td>
                                 </tr>
                             </tbody>
@@ -49,9 +50,10 @@
 
 import DashLayout from '../../layouts/DashLayout.vue';
 import SideBar from '../SideBar.vue';
-import { getCurrentInstance, computed } from "vue"
+import { getCurrentInstance, computed, onMounted, ref } from "vue"
 import { useStore } from "vuex";
 import { useRouter, useRoute } from 'vue-router';
+import { getEmployees } from '../../../services/EmployeesService'
 
 export default {
   props: {
@@ -64,11 +66,14 @@ export default {
         const root = getCurrentInstance().proxy;
         const store = useStore();
 
-        const users = [];
+        const employees = ref([]);
+
+        onMounted(async () => {
+            employees.value = await getEmployees();
+        });
 
         return {
-            user: computed(() => store.getters['userModule/getUser']),
-            users
+            employees
         }
     },
 }

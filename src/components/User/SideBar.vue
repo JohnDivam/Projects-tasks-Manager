@@ -8,7 +8,7 @@
         <router-link :to="getStatusLink(status)">Tasks In {{ status }}</router-link>
     </li>
     <li>
-        <router-link to="/admin/users" class="bg-dark mt-3"> Admin panel  </router-link>
+        <router-link to="/admin/employees" class="bg-dark mt-3"> Admin panel  </router-link>
     </li>
 </ul>
 <!-- end links -->

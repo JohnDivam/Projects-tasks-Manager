@@ -2,17 +2,12 @@ import axios from './axios'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-export async function getUsers(root){
+export async function getEmployees(root){
     try {
-        const response = await axios.get('/tasks',{
-            params: {
-                'project_id': root.$route.query.project_id,
-                'status': root.$route.query.status
-            }
-        });
-        
+        const response = await axios.get('/employees');
+
         if (response.status === 200) {
-            tasks.value = response.data.tasks;
+            return response.data.employees;
         }
 
     } catch (error) {
@@ -52,27 +47,10 @@ export async function getUsers(root){
 }
 
 
-export async function storeUser(taskData, root){
-    isPending.value = true;
-
+export async function storeEmployee(isPending, formData, root){
     try {
-        const formData = new FormData();
-        for (const key in taskData) {
-          if (key === 'files' && taskData[key]) {
-            for (let i = 0; i < taskData[key].length; i++) {
-              formData.append('files[]', taskData[key][i]);
-            }
-          } else {
-            formData.append(key, taskData[key]);
-          }
-        }
-        
-        const response = await axios.post('/tasks', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-        
+        const response = await axios.post('/employees', formData);
+
         if (response.status === 200 && response.data.status == true) {
             toast.success(response.data.message, {
                 position: "top-right",
@@ -80,13 +58,10 @@ export async function storeUser(taskData, root){
             });
 
             setTimeout(() => {
-                const redirect = root.$route.query.redirect || '/user/home';
-                root.$router.push(redirect);
+                root.$router.push('/admin/employees');
             }, 2000);
         }
-
     } catch (error) {
-        console.log(error);
         if (error.response) {
             const response = error.response;
             if (response.status === 401 || response.data.message) {
@@ -118,13 +93,5 @@ export async function storeUser(taskData, root){
                 autoClose: 3000,
             });
         }
-    } 
-    finally {
-        isPending.value = false;
     }
-    
-    
 }
-
-
-
