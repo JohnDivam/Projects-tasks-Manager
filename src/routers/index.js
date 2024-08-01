@@ -17,6 +17,7 @@ const routes = [
     { path: '/user/tasks/show/:id', component:  () => import("../components/User/Tasks/Show.vue"), meta: { requiresAuth: true }, },
     { path: '/admin/employees', component:  () => import("../components/Admin/Employees/Index.vue"),  meta: { requiresAuth: true }, },
     { path: '/admin/employees/create', component:  () => import("../components/Admin/Employees/Create.vue"),  meta: { requiresAuth: true }, },
+    { path: '/admin/employees/edit/:id', component:  () => import("../components/Admin/Employees/Edit.vue"),  meta: { requiresAuth: true }, },
     
 ];
 

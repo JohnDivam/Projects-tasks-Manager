@@ -51,6 +51,15 @@
             </tr>
         </tbody>
     </table>
+
+     <v-pagination
+        v-if="lastPage > 1"
+        v-model="currentPage"
+        :length="lastPage"
+        class="my-4"
+        @click="changePage"
+        rounded="circle"
+      ></v-pagination>
   </div>
 
 </template>
@@ -70,6 +79,8 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const selectedProject = ref(projects.value.find(project => project.id === newValue) || null);
+    const currentPage = ref(1);
+    const lastPage = ref(1);
 
     const fetchProjects = async() => {
       try {
@@ -79,13 +90,18 @@ export default {
       }
     }
 
-    const fetchTasks = async() => {
-      try {
-        await getTasks(tasks, root);
-      } catch (error) {
-        console.error('Error fetching tasks:', error);
-      }
+    const fetchTasks = async(page = 1) => {
+        const response = await getTasks(page, root);
+        tasks.value = response.data.tasks.data;
+        currentPage.value = response.data.tasks.current_page;
+        lastPage.value = response.data.tasks.last_page;
     }
+
+    const changePage = () => {
+        if (currentPage.value >= 1 && currentPage.value <= lastPage.value) {
+            fetchTasks(currentPage.value);
+        }
+    };
 
     onMounted(async () => {
         await fetchProjects();
@@ -105,7 +121,10 @@ export default {
         isPending,
         tasks, 
         fetchTasks,
-        };
+        currentPage,
+        lastPage,
+        changePage,
+      };
     }
 }
 </script>
