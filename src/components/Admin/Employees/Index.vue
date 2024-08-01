@@ -36,6 +36,15 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <v-pagination
+                        v-if="lastPage > 1"
+                        v-model="currentPage"
+                        :length="lastPage"
+                        class="my-4"
+                        @click="changePage"
+                        rounded="circle"
+                    ></v-pagination>
                 </div>
             </div>
         </div>
@@ -64,16 +73,32 @@ export default {
     },
     setup() {
         const root = getCurrentInstance().proxy;
-        const store = useStore();
-
+        const currentPage = ref(1);
+        const lastPage = ref(1);
         const employees = ref([]);
 
-        onMounted(async () => {
-            employees.value = await getEmployees();
+        const fetchEmployees = async (page = 1) => {
+            const response = await getEmployees(page);
+            employees.value = response.data.employees.data;
+            currentPage.value = response.data.employees.current_page;
+            lastPage.value = response.data.employees.last_page;
+        };
+
+        const changePage = () => {
+            if (currentPage.value >= 1 && currentPage.value <= lastPage.value) {
+                fetchEmployees(currentPage.value);
+            }
+        };
+
+        onMounted(() => {
+            fetchEmployees();
         });
 
         return {
-            employees
+            employees,
+            currentPage,
+            lastPage,
+            changePage,
         }
     },
 }
