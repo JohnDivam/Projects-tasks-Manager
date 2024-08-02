@@ -100,7 +100,7 @@ export default {
         });
 
         const updateEmployee = async()=>{
-            await update(route.params.id, formData.value);
+            await update(route.params.id, formData.value, root);
         }
 
         onMounted(async() => {

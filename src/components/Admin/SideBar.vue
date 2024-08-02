@@ -5,7 +5,7 @@
         <router-link to="/admin/employees"> Employees  </router-link>
     </li>
     <li>
-        <router-link to="/admin/employees"> Projects  </router-link>
+        <router-link to="/admin/projects"> Projects  </router-link>
     </li>
     <li>
         <router-link to="/admin/employees"> Permissions  </router-link>

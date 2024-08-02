@@ -84,7 +84,7 @@ export default {
 
     const fetchProjects = async() => {
       try {
-        await getProjects(isPending, projects, root);
+        projects.value = await getProjects();
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
