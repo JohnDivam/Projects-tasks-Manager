@@ -139,12 +139,19 @@ export async function find(id){
     } 
 }
 
-export async function update(id, formData){
+export async function update(id, formData, root){
     try {
         const response = await axios.put('/employees/'+id, formData);
 
-        if (response.status === 200) {
-            return response.data.employee;
+        if (response.status === 200 && response.data.status == true) {
+            toast.success(response.data.message, {
+                position: "top-right",
+                autoClose: 2000,
+            });
+
+            setTimeout(() => {
+                root.$router.push('/admin/employees');
+            }, 2000);
         }
 
     } catch (error) {

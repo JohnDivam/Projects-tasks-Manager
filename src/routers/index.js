@@ -18,6 +18,12 @@ const routes = [
     { path: '/admin/employees', component:  () => import("../components/Admin/Employees/Index.vue"),  meta: { requiresAuth: true }, },
     { path: '/admin/employees/create', component:  () => import("../components/Admin/Employees/Create.vue"),  meta: { requiresAuth: true }, },
     { path: '/admin/employees/edit/:id', component:  () => import("../components/Admin/Employees/Edit.vue"),  meta: { requiresAuth: true }, },
+
+    { path: '/admin/projects', component:  () => import("../components/Admin/Projects/Index.vue"),  meta: { requiresAuth: true }, },
+    { path: '/admin/projects/create', component:  () => import("../components/Admin/Projects/Create.vue"),  meta: { requiresAuth: true }, },
+    { path: '/admin/projects/edit/:id', component:  () => import("../components/Admin/Projects/Edit.vue"),  meta: { requiresAuth: true }, },
+
+    
     
 ];
 
