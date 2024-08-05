@@ -77,11 +77,20 @@ export default {
             const formDataToSend = new FormData();
             formDataToSend.append('name', formData.value.name);
             if(logoFile.value) {
-                formDataToSend.append('logo', logoFile.value);
+                formDataToSend.append('logo', await convertFileToBase64(logoFile.value));
             }
 
             await update(route.params.id, formDataToSend, root);
         }
+
+        const convertFileToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.onerror = (e) => reject(e);
+            reader.readAsDataURL(file);
+        });
+        };
 
         onMounted(async() => {
             const project = await find(route.params.id);
