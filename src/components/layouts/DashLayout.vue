@@ -45,12 +45,26 @@
 
 
 <script>
+import { onMounted } from "vue"
+
 export default {
   props: {
     pageTitle: String
   },
-  setup() {
+  setup(props) {
     const image = "/src/assets/vue.svg";
+
+    /*watch(
+        () => props.pageTitle,
+        (newTitle) => {
+          document.title = newTitle
+        }
+    )*/
+
+    onMounted(() => {
+      document.title = props.pageTitle
+    })
+
 
     return {
       image

@@ -2,9 +2,9 @@ import axios from './axios'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-export async function getEmployees(page){
+export async function getEmployees(page, perPage = 12){
     try {
-        const response = await axios.get('/employees?page='+page);
+        const response = await axios.get('/employees?perPage='+perPage+'&page='+page);
 
         if (response.status === 200) {
             return response;

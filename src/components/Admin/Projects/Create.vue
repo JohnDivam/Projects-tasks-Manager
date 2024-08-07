@@ -1,5 +1,5 @@
 <template>
-    <DashLayout page-title="Home">
+    <DashLayout page-title="Create project">
     
     <div class="homePanel">
         <div class="container">
@@ -29,7 +29,17 @@
                                         dense
                                     ></v-file-input>
 
-                                    
+                                    <v-select
+                                        v-model="formData.user_ids"
+                                        :items="employees"
+                                        item-title="name"
+                                        item-value="id"
+                                        label="Select Users"
+                                        multiple
+                                        outlined
+                                        dense
+                                    ></v-select>
+
                                     </div>
                                 </div>
 
@@ -54,6 +64,7 @@ import SideBar from '../SideBar.vue';
 import { getCurrentInstance, computed, onMounted, ref, reactive } from "vue"
 import { useRouter, useRoute } from 'vue-router';
 import { store } from '../../../services/ProjectService'
+import { getEmployees } from '../../../services/EmployeesService'
 
 export default {
   props: {
@@ -65,9 +76,11 @@ export default {
     setup() {
         const root = getCurrentInstance().proxy;
         const isPending =ref(false);
+        const employees = ref([]);
         const formData = ref({
             name: null,
             logo: null,
+            user_ids: [], 
         });
 
         const createProject = async()=>{
@@ -75,9 +88,15 @@ export default {
             await store(formData.value, root);
         }
         
+        onMounted(async() => {
+            const response = await getEmployees(1,1000);
+            employees.value = response.data.employees.data;
+        });
+
         return {
             formData,
-            createProject
+            createProject,
+            employees
         }
     },
 }

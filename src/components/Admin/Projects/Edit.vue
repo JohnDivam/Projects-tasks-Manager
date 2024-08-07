@@ -1,5 +1,5 @@
 <template>
-    <DashLayout page-title="Home">
+    <DashLayout page-title="Edit project">
     
     <div class="homePanel">
         <div class="container">
@@ -36,6 +36,17 @@
                                     </div>
                                 </div>
 
+                                <v-select
+                                    v-model="formData.user_ids"
+                                    :items="employees"
+                                    item-title="name"
+                                    item-value="id"
+                                    label="Select employees"
+                                    multiple
+                                    outlined
+                                    dense
+                                ></v-select>
+
                                 <v-btn type="submit" :disabled="isPending" color="success" block> Save </v-btn>
                             </form>
                         </div>
@@ -57,6 +68,7 @@ import SideBar from '../SideBar.vue';
 import { getCurrentInstance, computed, onMounted, ref, reactive } from "vue"
 import { useRoute } from 'vue-router';
 import { find, update } from '../../../services/ProjectService'
+import { getEmployees } from '../../../services/EmployeesService'
 
 export default {
     components:{
@@ -66,10 +78,11 @@ export default {
     setup() {
         const root = getCurrentInstance().proxy;
         const route = useRoute();
-        const isPending =ref(false);
+        const employees = ref([]);
         const formData = ref({
             name: '',
             logo: null,
+            user_ids: [], 
         });
         const logoFile = ref(null); // Separate ref for the file input
 
@@ -79,6 +92,9 @@ export default {
             if(logoFile.value) {
                 formDataToSend.append('logo', await convertFileToBase64(logoFile.value));
             }
+            formData.value.user_ids.forEach(user_id => {
+                formDataToSend.append('user_ids[]', user_id);
+            });
 
             await update(route.params.id, formDataToSend, root);
         }
@@ -93,17 +109,21 @@ export default {
         };
 
         onMounted(async() => {
+            const response = await getEmployees(1,1000);
+            employees.value = response.data.employees.data;
             const project = await find(route.params.id);
             formData.value = {
                 name: project.name,
                 logo: project.logo,
+                user_ids: project.userProjectAccess.map(access => access.user_id), 
             };
         });
         
         return {
             formData,
             updateProject,
-            logoFile
+            logoFile,
+            employees
         }
     },
 }
