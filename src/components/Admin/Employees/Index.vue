@@ -1,5 +1,5 @@
 <template>
-    <DashLayout page-title="Home">
+    <DashLayout page-title="Employees">
     
     <div class="homePanel">
         <div class="container">

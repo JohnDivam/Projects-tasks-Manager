@@ -19,12 +19,20 @@
 
 <script>
 import AppNavbar from './AppNavbar.vue'
+import { onMounted } from "vue"
+
 export default {
   components:{
     AppNavbar
   },
   props: {
     pageTitle: String
+  },
+  setup(props) {
+    
+    onMounted(() => {
+      document.title = props.pageTitle
+    })
   }
 }
 </script>
