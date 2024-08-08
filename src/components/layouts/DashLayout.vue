@@ -12,7 +12,7 @@
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img class="user" :src="image" alt="" height="30" width="30">
-                        <small>Amhmed </small>
+                        <small>{{user.name}} </small>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item" href="#">
@@ -45,29 +45,25 @@
 
 
 <script>
-import { onMounted } from "vue"
+import { ref, computed, onMounted } from "vue"
+import { useStore } from "vuex";
 
 export default {
   props: {
-    pageTitle: String
+    pageTitle: String,
   },
   setup(props) {
-    const image = "/src/assets/vue.svg";
+    const store = useStore();
 
-    /*watch(
-        () => props.pageTitle,
-        (newTitle) => {
-          document.title = newTitle
-        }
-    )*/
+    const user = computed(() => store.getters['userModule/getUser']);
 
     onMounted(() => {
       document.title = props.pageTitle
     })
 
-
     return {
-      image
+      user,
+      image: ref("/src/assets/user.png")
     }
   }
 }

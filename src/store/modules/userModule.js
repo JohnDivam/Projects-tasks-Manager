@@ -1,3 +1,5 @@
+import axios from '../../services/axios'
+
 const userModule = {
     namespaced: true,
     state() {
@@ -12,6 +14,9 @@ const userModule = {
         setUser: (state, payload) => {
             state.user = payload;
         },
+        clearUser(state) {
+            state.user = null;
+        }
     },
     actions:{
         user({ commit }, payload) {
@@ -19,7 +24,7 @@ const userModule = {
                 axios
                     .get(payload.endpoint)
                     .then(({ data }) => {
-                        commit("setUser", data);
+                        commit("setUser", data.user);
                         resolve(data)
                 }).catch(err => {
                     reject(err)
