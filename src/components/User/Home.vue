@@ -34,7 +34,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <SideBar :statuses="statuses" :currentStatus="currentStatus" />
+                <SideBar  v-if="user.name" :statuses="statuses" :currentStatus="currentStatus" :user="user" />
             </div>
             <div class="col-md-9">
                 <TasksTable />
@@ -66,6 +66,7 @@ export default {
     setup() {
         const root = getCurrentInstance().proxy;
         const store = useStore();
+
         const statuses = [
             'Backlog',
             'Progress',
@@ -76,11 +77,10 @@ export default {
         ];
         
         const currentStatus = computed(() => root.$route.query.status || "");
-
-      
+        const user = computed(() => store.getters['userModule/getUser']);
 
         return {
-            user: computed(() => store.getters['userModule/getUser']),
+            user,
             statuses,
             currentStatus,
         }
