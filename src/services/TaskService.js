@@ -53,9 +53,7 @@ export async function getTasks(page, root){
 }
 
 
-export async function storeTask(isPending, taskData, root){
-    isPending.value = true;
-
+export async function storeTask(taskData, root){
     try {
         const formData = new FormData();
         for (const key in taskData) {
@@ -120,9 +118,7 @@ export async function storeTask(isPending, taskData, root){
             });
         }
     } 
-    finally {
-        isPending.value = false;
-    }
+    
     
     
 }

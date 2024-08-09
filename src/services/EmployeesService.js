@@ -47,7 +47,7 @@ export async function getEmployees(page, perPage = 12){
 }
 
 
-export async function storeEmployee(isPending, formData, root){
+export async function storeEmployee(formData, root){
     try {
         const response = await axios.post('/employees', formData);
 
@@ -139,7 +139,7 @@ export async function find(id){
     } 
 }
 
-export async function update(id, formData, root){
+export async function update(id, formData, root, isPending){
     try {
         const response = await axios.put('/employees/'+id, formData);
 

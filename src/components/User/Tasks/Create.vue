@@ -103,7 +103,7 @@
             ></v-file-input>
 
        
-            <v-btn type="submit" :disabled="isPending" color="success" block>Create Task</v-btn>
+            <v-btn type="submit" :disabled="isPending" :loading="isPending" color="success" block>Create Task</v-btn>
 
           </form>
       </div>
@@ -150,11 +150,8 @@ export default {
     }
 
    const createTask = async () => {
-      try {
-        await storeTask(isPending, formData.value, root);
-      } catch (error) {
-        console.error('Error creating task:', error);
-      } 
+      isPending.value = true;
+      await storeTask(formData.value, root);
     };
 
     onMounted(async () => {

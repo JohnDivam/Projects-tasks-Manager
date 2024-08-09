@@ -39,7 +39,7 @@
                         
 
                             <v-btn type="submit" 
-                                :disabled="!valid"
+                                :disabled="!valid || isPending"
                                 :loading="isPending"
                                 @click.prevent="login" block class="mt-4 btn-site"
                             >Submit</v-btn>
@@ -83,8 +83,8 @@ export default {
 
         
         const login = async() => {
-           if (isPending.value) return;
-            userLogin(loginForm, isPending, root)
+           isPending.value = true;
+            userLogin(loginForm, root)
         };
 
         return {

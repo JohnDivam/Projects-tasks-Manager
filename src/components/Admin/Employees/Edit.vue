@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
 
-                                <v-btn type="submit" :disabled="isPending" color="success" block> Save </v-btn>
+                                <v-btn type="submit" :disabled="isPending"  :loading="isPending" color="success" block> Save </v-btn>
                             </form>
                         </div>
                     </div>
@@ -100,6 +100,7 @@ export default {
         });
 
         const updateEmployee = async()=>{
+            isPending.value = true;
             await update(route.params.id, formData.value, root);
         }
 

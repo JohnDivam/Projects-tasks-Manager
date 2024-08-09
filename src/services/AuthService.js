@@ -2,9 +2,7 @@ import axios from './axios'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-export async function userLogin(form, isPending, root){
-    isPending.value = true;
-
+export async function userLogin(form,root){
     try {
         const response = await axios.post('/login', {
             'email':form.email,
@@ -59,8 +57,6 @@ export async function userLogin(form, isPending, root){
                 autoClose: 3000,
             });
         }
-    } finally {
-        isPending.value = false;
-    }
+    } 
     
 }
