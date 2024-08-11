@@ -78,6 +78,7 @@ export default {
     setup() {
         const root = getCurrentInstance().proxy;
         const route = useRoute();
+        const isPending =ref(false);
         const employees = ref([]);
         const formData = ref({
             name: '',
@@ -96,7 +97,7 @@ export default {
                 formDataToSend.append('user_ids[]', user_id);
             });
 
-            await update(route.params.id, formDataToSend, root);
+            await update(route.params.id, formDataToSend, isPending, root);
         }
 
         const convertFileToBase64 = (file) => {

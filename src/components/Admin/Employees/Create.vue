@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
 
-                                <v-btn type="submit" :disabled="isPending" color="success" block>Create</v-btn>
+                                <v-btn type="submit" :disabled="isPending"  :loading="isPending" color="success" block>Create</v-btn>
                             </form>
                         </div>
                     </div>
@@ -104,7 +104,7 @@ export default {
         });
 
         const createEmployee = async()=>{
-            await storeEmployee(isPending, formData.value, root);
+            await storeEmployee(formData.value, isPending, root);
         }
         
         return {

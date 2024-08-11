@@ -1,6 +1,15 @@
 <template>
     
   <div class="row">
+     <div class="col-md-3">
+      <v-text-field
+          v-model="searchQuery"
+          label="Search Tasks"
+          outlined
+          dense
+          :disabled="isPending"
+        ></v-text-field>
+    </div>
     <div class="col-md-3">
       <v-select
           :items="projects"
@@ -12,9 +21,6 @@
           dense
           :disabled="isPending"
       ></v-select>
-    </div>
-    <div class="col-md-3">
-
     </div>
     <div class="col-md-3">
       
@@ -69,6 +75,7 @@ import { computed, ref, getCurrentInstance, onMounted, watch  } from "vue";
 import { getProjects } from "../../../services/ProjectService";
 import { getTasks } from "../../../services/TaskService";
 import { useRouter, useRoute } from 'vue-router';
+import debounce from 'lodash.debounce'
 
 export default {
     setup() {
@@ -79,6 +86,7 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const selectedProject = ref(projects.value.find(project => project.id === newValue) || null);
+    const searchQuery = ref(null);
     const currentPage = ref(1);
     const lastPage = ref(1);
 
@@ -103,6 +111,7 @@ export default {
         }
     };
 
+ 
     onMounted(async () => {
         await fetchProjects();
         await fetchTasks();
@@ -115,6 +124,14 @@ export default {
     watch(() => root.$route.query.status,(newValue) => fetchTasks());
     watch(() => root.$route.query.project_id,(newValue) => fetchTasks());
 
+
+    watch(searchQuery, debounce((newValue) => {
+        router.push({ name: 'UserHome', query: { ...route.query, 'search': newValue } });
+        fetchTasks();
+    }, 300));
+
+
+
     return {
         selectedProject,
         projects,
@@ -124,6 +141,7 @@ export default {
         currentPage,
         lastPage,
         changePage,
+        searchQuery
       };
     }
 }
