@@ -150,8 +150,7 @@ export default {
     }
 
    const createTask = async () => {
-      isPending.value = true;
-      await storeTask(formData.value, root);
+      await storeTask(formData.value, isPending, root);
     };
 
     onMounted(async () => {

@@ -104,8 +104,7 @@ export default {
         });
 
         const createEmployee = async()=>{
-            isPending.value = true;
-            await storeEmployee(formData.value, root);
+            await storeEmployee(formData.value, isPending, root);
         }
         
         return {

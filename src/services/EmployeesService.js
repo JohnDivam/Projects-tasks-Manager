@@ -1,6 +1,7 @@
 import axios from './axios'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import handleError from './handleError';
 
 export async function getEmployees(page, perPage = 12){
     try {
@@ -47,7 +48,8 @@ export async function getEmployees(page, perPage = 12){
 }
 
 
-export async function storeEmployee(formData, root){
+export async function storeEmployee(formData, isPending, root){
+    isPending.value  = true;
     try {
         const response = await axios.post('/employees', formData);
 
@@ -62,37 +64,10 @@ export async function storeEmployee(formData, root){
             }, 2000);
         }
     } catch (error) {
-        if (error.response) {
-            const response = error.response;
-            if (response.status === 401 || response.data.message) {
-                toast.error(response.data.message, {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            } else if (response.status === 422) {
-                for (let i in response.data.errors) {
-                    toast.warning(response.data.errors[i][0], {
-                        position: "top-right",
-                        autoClose: 3000,
-                    });
-                }
-            } else {
-                toast.error("Something went wrong! Please try again.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            }
-        } else if (error.request) {
-            toast.error("No response from the server. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        } else {
-            toast.error("An error occurred. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        }
+        handleError(error);
+    }
+    finally{
+        isPending.value  = false;
     }
 }
 
@@ -105,41 +80,13 @@ export async function find(id){
         }
 
     } catch (error) {
-        if (error.response) {
-            const response = error.response;
-            if (response.status === 401 || response.data.message) {
-                toast.error(response.data.message, {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            } else if (response.status === 422) {
-                for (let i in response.data.errors) {
-                    toast.warning(response.data.errors[i][0], {
-                        position: "top-right",
-                        autoClose: 3000,
-                    });
-                }
-            } else {
-                toast.error("Something went wrong! Please try again.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            }
-        } else if (error.request) {
-            toast.error("No response from the server. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        } else {
-            toast.error("An error occurred. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        }
+        handleError(error);
     } 
 }
 
-export async function update(id, formData, root, isPending){
+export async function update(id, formData, isPending, root){
+    isPending.value  = true;
+
     try {
         const response = await axios.put('/employees/'+id, formData);
 
@@ -155,36 +102,9 @@ export async function update(id, formData, root, isPending){
         }
 
     } catch (error) {
-        if (error.response) {
-            const response = error.response;
-            if (response.status === 401 || response.data.message) {
-                toast.error(response.data.message, {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            } else if (response.status === 422) {
-                for (let i in response.data.errors) {
-                    toast.warning(response.data.errors[i][0], {
-                        position: "top-right",
-                        autoClose: 3000,
-                    });
-                }
-            } else {
-                toast.error("Something went wrong! Please try again.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            }
-        } else if (error.request) {
-            toast.error("No response from the server. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        } else {
-            toast.error("An error occurred. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        }
+        handleError(error);
     } 
+    finally{
+        isPending.value  = false;
+    }
 }

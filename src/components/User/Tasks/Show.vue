@@ -6,10 +6,10 @@
       <div class="card-header d-flex"> 
         <span>{{ task.name }}</span> 
         <div class="ml-auto d-flex align-items-center">
-            <select class="form-control mr-3" @change="handleStatusChange($event)">
+            <select class="form-control mr-3" :disabled="isPending" @change="handleStatusChange($event)">
                 <option v-for="status in task.available_statuses" :key="status" :value="status"  :selected="status === task.status">{{status}}</option>
             </select>
-            <select class="form-control mr-3" @change="handleAssignToChange($event)">
+            <select class="form-control mr-3" :disabled="isPending" @change="handleAssignToChange($event)">
                 <option value="" selected disabled>Assign to: </option>
                 <option v-for="employee in employees" :key="employee.id" :value="employee.id" :selected="employee.id === task.assign_employee_id"  >{{employee.name}}</option>
             </select>
@@ -74,16 +74,9 @@ export default {
         const employees = ref([]);
  
         const findTask = async() => {
-            try {
-                isPending.value = true;
-                const taskData = await getTask(route.params.id);
-                task.value = taskData.task;
-                employees.value = taskData.employees;
-            } catch (error) {
-                console.error('Error find task:', error);
-            } finally {
-                isPending.value = false;
-            }
+            const taskData = await getTask(route.params.id);
+            task.value = taskData.task;
+            employees.value = taskData.employees;
         }
 
        
@@ -92,26 +85,12 @@ export default {
         };
 
         const handleStatusChange = async(event) => {
-             try {
-                isPending.value = true;
-                task.status = await updateStatus(route.params.id, event.target.value);
-            } catch (error) {
-                console.error('Error update status:', error);
-            } finally {
-                isPending.value = false;
-            }
+            task.status = await updateStatus(route.params.id, event.target.value, isPending);
         };
 
         
         const handleAssignToChange = async(event) => {
-             try {
-                isPending.value = true;
-                task.assign_employee_id = await assignTaskTo(route.params.id, event.target.value);
-            } catch (error) {
-                console.error('Error update status:', error);
-            } finally {
-                isPending.value = false;
-            }
+            task.assign_employee_id = await assignTaskTo(route.params.id, event.target.value, isPending);
         };
 
 

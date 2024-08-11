@@ -1,6 +1,8 @@
 import axios from './axios'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import handleError from './handleError';
+
 
 export async function getTasks(page, root){
     try {
@@ -8,7 +10,8 @@ export async function getTasks(page, root){
             params: {
                 'page' : page,
                 'project_id': root.$route.query.project_id,
-                'status': root.$route.query.status
+                'status': root.$route.query.status,
+                'search': root.$route.query.search
             }
         });
         
@@ -53,7 +56,8 @@ export async function getTasks(page, root){
 }
 
 
-export async function storeTask(taskData, root){
+export async function storeTask(taskData, isPending, root){
+    isPending.value  = true;
     try {
         const formData = new FormData();
         for (const key in taskData) {
@@ -85,39 +89,11 @@ export async function storeTask(taskData, root){
         }
 
     } catch (error) {
-        console.log(error);
-        if (error.response) {
-            const response = error.response;
-            if (response.status === 401 || response.data.message) {
-                toast.error(response.data.message, {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            } else if (response.status === 422) {
-                for (let i in response.data.errors) {
-                    toast.warning(response.data.errors[i][0], {
-                        position: "top-right",
-                        autoClose: 3000,
-                    });
-                }
-            } else {
-                toast.error("Something went wrong! Please try again.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            }
-        } else if (error.request) {
-            toast.error("No response from the server. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        } else {
-            toast.error("An error occurred. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        }
+        handleError(error);
     } 
+    finally{
+        isPending.value  = false;
+    }
     
     
     
@@ -132,42 +108,12 @@ export async function getTask(id){
         }
 
     } catch (error) {
-        console.log(error);
-        if (error.response) {
-            const response = error.response;
-            if (response.status === 401 || response.data.message) {
-                toast.error(response.data.message, {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            } else if (response.status === 422) {
-                for (let i in response.data.errors) {
-                    toast.warning(response.data.errors[i][0], {
-                        position: "top-right",
-                        autoClose: 3000,
-                    });
-                }
-            } else {
-                toast.error("Something went wrong! Please try again.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            }
-        } else if (error.request) {
-            toast.error("No response from the server. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        } else {
-            toast.error("An error occurred. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        }
+        handleError(error); 
     } 
 }
 
-export async function updateStatus(task_id,new_status){
+export async function updateStatus(task_id, new_status, isPending){
+    isPending.value  = true;
     try {
        
         const response = await axios.post('/tasks/update-status/'+task_id,{
@@ -184,46 +130,18 @@ export async function updateStatus(task_id,new_status){
         }
 
     } catch (error) {
-        console.log(error);
-        if (error.response) {
-            const response = error.response;
-            if (response.status === 401 || response.data.message) {
-                toast.error(response.data.message, {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            } else if (response.status === 422) {
-                for (let i in response.data.errors) {
-                    toast.warning(response.data.errors[i][0], {
-                        position: "top-right",
-                        autoClose: 3000,
-                    });
-                }
-            } else {
-                toast.error("Something went wrong! Please try again.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            }
-        } else if (error.request) {
-            toast.error("No response from the server. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        } else {
-            toast.error("An error occurred. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        }
+        handleError(error); 
     } 
-    
+    finally{
+        isPending.value  = false;
+    }
     
     
 }
 
 
-export async function assignTaskTo(task_id, employee_id){
+export async function assignTaskTo(task_id, employee_id, isPending){
+    isPending.value  = true;
     try {
        
         const response = await axios.post('/tasks/assignTo/'+task_id,{
@@ -240,39 +158,11 @@ export async function assignTaskTo(task_id, employee_id){
         }
 
     } catch (error) {
-        console.log(error);
-        if (error.response) {
-            const response = error.response;
-            if (response.status === 401 || response.data.message) {
-                toast.error(response.data.message, {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            } else if (response.status === 422) {
-                for (let i in response.data.errors) {
-                    toast.warning(response.data.errors[i][0], {
-                        position: "top-right",
-                        autoClose: 3000,
-                    });
-                }
-            } else {
-                toast.error("Something went wrong! Please try again.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            }
-        } else if (error.request) {
-            toast.error("No response from the server. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        } else {
-            toast.error("An error occurred. Please try again.", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-        }
+        handleError(error); 
     } 
+    finally{
+        isPending.value  = false;
+    }
 }
 
 

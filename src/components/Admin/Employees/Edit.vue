@@ -100,8 +100,7 @@ export default {
         });
 
         const updateEmployee = async()=>{
-            isPending.value = true;
-            await update(route.params.id, formData.value, root);
+            await update(route.params.id, formData.value, isPending, root);
         }
 
         onMounted(async() => {

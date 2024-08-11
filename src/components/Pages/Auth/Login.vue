@@ -83,8 +83,7 @@ export default {
 
         
         const login = async() => {
-           isPending.value = true;
-            userLogin(loginForm, root)
+            userLogin(loginForm, isPending, root);
         };
 
         return {

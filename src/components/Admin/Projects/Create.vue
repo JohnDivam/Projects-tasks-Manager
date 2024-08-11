@@ -84,8 +84,7 @@ export default {
         });
 
         const createProject = async()=>{
-            isPending.value = true;
-            await store(formData.value, root);
+            await store(formData.value, isPending, root);
         }
         
         onMounted(async() => {
