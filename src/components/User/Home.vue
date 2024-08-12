@@ -34,7 +34,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <SideBar  v-if="user.name" :statuses="statuses" :currentStatus="currentStatus" :user="user" />
+                <SideBar  v-if="user.name" :statuses="statuses"  :user="user" />
             </div>
             <div class="col-md-9">
                 <TasksTable />
@@ -66,6 +66,7 @@ export default {
     setup() {
         const root = getCurrentInstance().proxy;
         const store = useStore();
+        const isLoaded = false;
 
         const statuses = [
             'Backlog',
@@ -83,6 +84,7 @@ export default {
             user,
             statuses,
             currentStatus,
+            isLoaded
         }
     },
 }

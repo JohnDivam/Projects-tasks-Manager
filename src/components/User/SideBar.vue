@@ -16,14 +16,17 @@
 
 <script>
 import { useRouter, useRoute } from 'vue-router';
+import { computed, watch, getCurrentInstance } from "vue"
 export default{
     props:{
-        currentStatus: String,
         statuses : Array,
         user: Object
     },
     setup(props){
+        const root = getCurrentInstance().proxy;
+
         const route = useRoute();
+        const currentStatus = computed(() => root.$route.query.status || "");
 
         const getStatusLink = (status) => {
             return {
@@ -32,11 +35,14 @@ export default{
             };
         };
 
+        watch(() => root.$route.query.status,(newValue) => currentStatus.value = newValue);
+
+
         return {
             statuses: props.statuses, 
-            currentStatus: props.currentStatus,
             user: props.user,
-            getStatusLink 
+            currentStatus,
+            getStatusLink
         }
     }
 }

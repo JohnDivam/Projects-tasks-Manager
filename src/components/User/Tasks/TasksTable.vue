@@ -117,20 +117,25 @@ export default {
         await fetchTasks();
     });
 
-    watch(selectedProject, (newValue) => {
-      router.push({ name: 'UserHome', query: {  ...route.query, 'project_id': newValue } });
-    })
 
     watch(() => root.$route.query.status,(newValue) => fetchTasks());
     watch(() => root.$route.query.project_id,(newValue) => fetchTasks());
+    watch(() => root.$route.query.search,(newValue) => {
+      searchQuery.value = newValue;
+      fetchTasks();
+    });
 
+    watch(searchQuery, (newValue) => {
+        if(newValue != root.$route.query.search){
+          router.push({ name: 'UserHome', query: { ...route.query, 'search': newValue } });
+        }
+    }, 300);
 
-    watch(searchQuery, debounce((newValue) => {
-        router.push({ name: 'UserHome', query: { ...route.query, 'search': newValue } });
-        fetchTasks();
-    }, 300));
-
-
+    watch(selectedProject, (newValue) => {
+      if(newValue != root.$route.query.project_id){
+        router.push({ name: 'UserHome', query: {  ...route.query, 'project_id': newValue } });
+      }
+    });
 
     return {
         selectedProject,
