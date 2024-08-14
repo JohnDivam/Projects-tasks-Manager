@@ -3,7 +3,8 @@ import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import handleError from './handleError';
 
-export async function getEmployees(page, perPage = 12){
+export async function getEmployees(page, isPending, perPage = 12){
+    isPending.value = true;
     try {
         const response = await axios.get('/employees?perPage='+perPage+'&page='+page);
 
@@ -45,6 +46,9 @@ export async function getEmployees(page, perPage = 12){
             });
         }
     } 
+    finally{
+        isPending.value = false;
+    }
 }
 
 
