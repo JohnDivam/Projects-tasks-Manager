@@ -20,8 +20,13 @@
                                 <th>Actions</th>
                             </thead>
                             <tbody>
-                                <tr v-if="projects.length === 0">
-                                <td colspan="5" class="text-center">No projects found</td>
+                                <tr v-if="isPending">
+                                    <td colspan="6">
+                                        <v-skeleton-loader type="table-row" :loading="isPending"></v-skeleton-loader>
+                                    </td>
+                                </tr>
+                                <tr v-else-if="projects.length === 0">
+                                    <td colspan="5" class="text-center">No projects found</td>
                                 </tr>
                                 <tr else v-for="(project) in projects" :key="project.id">
                                     <td>{{ project.id }}</td>
@@ -64,13 +69,15 @@ export default {
     setup() {
         const root = getCurrentInstance().proxy;
         const projects = ref([]);
+        const isPending = ref(false);
        
         onMounted( async() => {
-            projects.value = await getProjects();
+            projects.value = await getProjects(isPending);
         });
 
         return {
             projects,
+            isPending
         }
     },
 }

@@ -21,7 +21,12 @@
                                 <th>Actions</th>
                             </thead>
                             <tbody>
-                                <tr v-if="employees.length === 0">
+                                 <tr v-if="isPending">
+                                    <td colspan="6">
+                                        <v-skeleton-loader type="table-row" :loading="isPending"></v-skeleton-loader>
+                                    </td>
+                                </tr>
+                                <tr v-else-if="employees.length === 0">
                                 <td colspan="5" class="text-center">No employees found</td>
                                 </tr>
                                 <tr else v-for="(employee) in employees" :key="employee.id">
@@ -76,9 +81,10 @@ export default {
         const currentPage = ref(1);
         const lastPage = ref(1);
         const employees = ref([]);
+        const isPending = ref(false);
 
         const fetchEmployees = async (page = 1) => {
-            const response = await getEmployees(page);
+            const response = await getEmployees(page, isPending);
             employees.value = response.data.employees.data;
             currentPage.value = response.data.employees.current_page;
             lastPage.value = response.data.employees.last_page;
@@ -99,6 +105,7 @@ export default {
             currentPage,
             lastPage,
             changePage,
+            isPending
         }
     },
 }

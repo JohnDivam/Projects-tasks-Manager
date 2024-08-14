@@ -1,5 +1,4 @@
 <template>
-    
   <div class="row">
      <div class="col-md-3">
       <v-text-field
@@ -7,7 +6,6 @@
           label="Search Tasks"
           outlined
           dense
-          :disabled="isPending"
         ></v-text-field>
     </div>
     <div class="col-md-3">
@@ -42,10 +40,15 @@
             <th>Actions</th>
         </thead>
         <tbody>
-            <tr v-if="tasks.length === 0">
-            <td colspan="5" class="text-center">No tasks found</td>
+            <tr v-if="isPending">
+              <td colspan="6">
+                <v-skeleton-loader type="table-row" :loading="isPending"></v-skeleton-loader>
+              </td>
             </tr>
-            <tr else v-for="(task) in tasks" :key="task.id">
+            <tr v-else-if="tasks.length === 0">
+              <td colspan="6" class="text-center">No tasks found</td>
+            </tr>
+            <tr v-else v-for="(task) in tasks" :key="task.id">
                 <td>{{ task.id }}</td>
                 <td>{{ task.name }}</td> 
                 <td>{{ task.priority }}</td> 
@@ -99,7 +102,7 @@ export default {
     }
 
     const fetchTasks = async(page = 1) => {
-        const response = await getTasks(page, root);
+        const response = await getTasks(page, isPending,  root);
         tasks.value = response.data.tasks.data;
         currentPage.value = response.data.tasks.current_page;
         lastPage.value = response.data.tasks.last_page;

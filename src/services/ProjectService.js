@@ -3,7 +3,8 @@ import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import handleError from './handleError';
 
-export async function getProjects(){
+export async function getProjects(isPending){
+    isPending.value = true;
     try {
         const response = await axios.get('/projects');
         
@@ -14,6 +15,9 @@ export async function getProjects(){
     } catch (error) {
         handleError(error);
     } 
+    finally{
+        isPending.value = false;
+    }
     
 }
 

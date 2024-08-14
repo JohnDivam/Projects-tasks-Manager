@@ -4,7 +4,8 @@ import 'vue3-toastify/dist/index.css';
 import handleError from './handleError';
 
 
-export async function getTasks(page, root){
+export async function getTasks(page, isPending, root){
+    isPending.value  = true;
     try {
         const response = await axios.get('/tasks',{
             params: {
@@ -53,6 +54,10 @@ export async function getTasks(page, root){
             });
         }
     } 
+    finally{
+        isPending.value  = false;
+    }
+    
 }
 
 
