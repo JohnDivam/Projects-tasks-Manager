@@ -37,10 +37,7 @@
                         <li>Created at: {{task.created_at}}</li>
                         <li>Priority: {{task.priority}}</li>
                         <li>Type: {{task.type}}</li>
-                        <li>Estimated time: {{task.estimated_time}}</li>
-                        <li>Start at: {{task.start_at}}</li>
-                        <li>End at: {{task.end_at}}</li>
-                        
+                        <li>Estimated time: {{task.estimated_time}}</li>                        
                     </ul>
                 </div>
             </div>

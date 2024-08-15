@@ -10,19 +10,19 @@
             <div class="row analyseRow" >
                 <div class="col-md-4">
                     <div class="analyseItem">
-                        <h5 class="d-block">11</h5>
+                        <h5 class="d-block">{{analyses.waiting}}</h5>
                         <span class="text-muted">Tasks In Waiting</span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="analyseItem">
-                        <h5 class="d-block"> 3 </h5>
+                        <h5 class="d-block"> {{analyses.disapproved}} </h5>
                         <span class="text-muted">Tasks Disapproved</span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="analyseItem">
-                        <h5 class="d-block">25</h5>
+                        <h5 class="d-block"> {{analyses.completed}}</h5>
                         <span class="text-muted">Tasks Completed</span>
                     </div>
                 </div>
@@ -52,10 +52,11 @@
 
 import DashLayout from '../layouts/DashLayout.vue';
 import SideBar from './SideBar.vue';
-import { getCurrentInstance, computed } from "vue"
+import { ref, getCurrentInstance, onMounted, computed   } from "vue";
 import { useStore } from "vuex";
 import TasksTable from   './Tasks/TasksTable.vue';
 import { useRouter, useRoute } from 'vue-router';
+import { getAnalyses } from "../../services/AnalysesService";
 
 export default {
     components:{
@@ -67,6 +68,11 @@ export default {
         const root = getCurrentInstance().proxy;
         const store = useStore();
         const isLoaded = false;
+        const analyses=  ref({
+            'waiting':'...',
+            'disapproved':'...',
+            'completed':'...',
+        });
 
         const statuses = [
             'Backlog',
@@ -80,11 +86,17 @@ export default {
         const currentStatus = computed(() => root.$route.query.status || "");
         const user = computed(() => store.getters['userModule/getUser']);
 
+    
+        onMounted(async () => {
+            analyses.value = await getAnalyses();
+        });
+
         return {
             user,
             statuses,
             currentStatus,
-            isLoaded
+            isLoaded,
+            analyses
         }
     },
 }
