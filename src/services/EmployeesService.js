@@ -112,3 +112,19 @@ export async function update(id, formData, isPending, root){
         isPending.value  = false;
     }
 }
+
+export async function deleteEmployee(id){
+    try {
+        const response = await axios.delete('/employees/'+id);
+
+        if (response.status === 200) {
+            toast.success(response.data.message, {
+                position: "top-right",
+                autoClose: 2000,
+            });
+        }
+
+    } catch (error) {
+        handleError(error);
+    } 
+}

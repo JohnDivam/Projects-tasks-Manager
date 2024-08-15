@@ -88,7 +88,7 @@ export default {
         }
         
         onMounted(async() => {
-            const response = await getEmployees(1,1000);
+            const response = await getEmployees(1, isPending, 1000);
             employees.value = response.data.employees.data;
         });
 
