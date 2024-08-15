@@ -34,6 +34,7 @@
                                     <td> <img :src="project.logo" alt="" height="50"> </td> 
                                     <td class="text-center">
                                         <router-link :to="'/admin/projects/edit/'+project.id"  class="btn btn-sm">Edit</router-link>
+                                        <button @click="confirmDelete(project.id)" class="btn btn-sm btn-danger">Delete</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -57,7 +58,7 @@ import SideBar from '../SideBar.vue';
 import { getCurrentInstance, computed, onMounted, ref } from "vue"
 import { useStore } from "vuex";
 import { useRouter, useRoute } from 'vue-router';
-import { getProjects } from '../../../services/ProjectService'
+import { getProjects, deleteProject } from '../../../services/ProjectService'
 
 export default {
   props: {
@@ -71,13 +72,21 @@ export default {
         const projects = ref([]);
         const isPending = ref(false);
        
+        const confirmDelete = async(projectId) => {
+            if (confirm("Are you sure you want to delete this project?")) {
+                await deleteProject(projectId);
+                projects.value = projects.value.filter(project => project.id !== projectId);
+            }
+        };
+
         onMounted( async() => {
             projects.value = await getProjects(isPending);
         });
 
         return {
             projects,
-            isPending
+            isPending,
+            confirmDelete
         }
     },
 }

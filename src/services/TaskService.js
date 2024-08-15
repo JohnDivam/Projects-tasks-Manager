@@ -170,6 +170,21 @@ export async function assignTaskTo(task_id, employee_id, isPending){
     }
 }
 
+export async function deleteTask(id){
+    try {
+        const response = await axios.delete('/tasks/'+id);
+
+        if (response.status === 200) {
+            toast.success(response.data.message, {
+                position: "top-right",
+                autoClose: 2000,
+            });
+        }
+
+    } catch (error) {
+        handleError(error);
+    } 
+}
 
 
 

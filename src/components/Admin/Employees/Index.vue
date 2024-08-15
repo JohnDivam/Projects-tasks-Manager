@@ -36,6 +36,7 @@
                                     <td>{{ employee.phone }}</td> 
                                     <td class="text-center">
                                         <router-link :to="'/admin/employees/edit/'+employee.id"  class="btn btn-sm">Edit</router-link>
+                                        <button @click="confirmDelete(employee.id)" class="btn btn-sm btn-danger">Delete</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -67,7 +68,7 @@ import SideBar from '../SideBar.vue';
 import { getCurrentInstance, computed, onMounted, ref } from "vue"
 import { useStore } from "vuex";
 import { useRouter, useRoute } from 'vue-router';
-import { getEmployees } from '../../../services/EmployeesService'
+import { getEmployees, deleteEmployee } from '../../../services/EmployeesService'
 
 export default {
   props: {
@@ -96,6 +97,14 @@ export default {
             }
         };
 
+       
+        const confirmDelete = async(employeeId) => {
+            if (confirm("Are you sure you want to delete this employee?")) {
+                await deleteEmployee(employeeId);
+                employees.value = employees.value.filter(employee => employee.id !== employeeId);
+            }
+        };
+
         onMounted(() => {
             fetchEmployees();
         });
@@ -105,7 +114,8 @@ export default {
             currentPage,
             lastPage,
             changePage,
-            isPending
+            isPending,
+            confirmDelete
         }
     },
 }

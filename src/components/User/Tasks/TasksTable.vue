@@ -56,6 +56,7 @@
                 <td>{{ task.status.status }}</td> 
                 <td class="text-center">
                     <router-link :to="'/user/tasks/show/'+task.id"  class="btn btn-sm">Show</router-link>
+                    <button @click="confirmDelete(task.id)" class="btn btn-sm btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>
@@ -74,11 +75,10 @@
 </template>
 
 <script>
-import { computed, ref, getCurrentInstance, onMounted, watch  } from "vue";
-import { getProjects } from "../../../services/ProjectService";
-import { getTasks } from "../../../services/TaskService";
+import { ref, getCurrentInstance, onMounted, watch  } from "vue";
 import { useRouter, useRoute } from 'vue-router';
-import debounce from 'lodash.debounce'
+import { getProjects } from "../../../services/ProjectService";
+import { getTasks,deleteTask } from "../../../services/TaskService";
 
 export default {
     setup() {
@@ -113,6 +113,14 @@ export default {
             fetchTasks(currentPage.value);
         }
     };
+
+    const confirmDelete = async(taskId) => {
+      if (confirm("Are you sure you want to delete this task?")) {
+          await deleteTask(taskId);
+          tasks.value = tasks.value.filter(task => task.id !== taskId);
+      }
+    };
+
 
  
     onMounted(async () => {
@@ -149,7 +157,8 @@ export default {
         currentPage,
         lastPage,
         changePage,
-        searchQuery
+        searchQuery,
+        confirmDelete
       };
     }
 }

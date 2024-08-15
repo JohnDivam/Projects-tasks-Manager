@@ -19,6 +19,7 @@
                   item-value="id"
                   outlined
                   dense
+                  :disabled="isPending"
               ></v-select>
             </div>
             <div class="col-md-8">
@@ -143,7 +144,7 @@ export default {
 
     const fetchProjects = async() => {
       try {
-        projects.value = await getProjects();
+        projects.value = await getProjects(isPending);
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
