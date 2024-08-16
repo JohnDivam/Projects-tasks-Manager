@@ -37,7 +37,7 @@
                 <SideBar  v-if="user.name" :statuses="statuses"  :user="user" />
             </div>
             <div class="col-md-9">
-                <TasksTable />
+                <TasksTable :user="user" />
             </div>
         </div>
     </div>

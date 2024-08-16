@@ -23,8 +23,8 @@
     <div class="col-md-3">
       
     </div>
-    <div class="col-md-3 text-right">
-      <router-link  to="/user/tasks/create" class="btn btn-sm btn-success">Create Task</router-link>
+    <div  v-if="user.type === 'admin' || user.type === 'superadmin'" class="col-md-3 text-right">
+      <router-link  to="/user/tasks/create"  class="btn btn-sm btn-success">Create Task</router-link>
     </div>
   </div>
   <!-- end row -->
@@ -34,8 +34,10 @@
         <thead>
             <th>#</th>
             <th>Name</th>
+            <th>Project</th>
             <th>Priority</th>
             <th>Estimated Time</th>
+            <th>Assign to</th>
             <th>Status</th>
             <th>Actions</th>
         </thead>
@@ -51,12 +53,15 @@
             <tr v-else v-for="(task) in tasks" :key="task.id">
                 <td>{{ task.id }}</td>
                 <td>{{ task.name }}</td> 
+                <td>{{ task.project?.name }}</td> 
                 <td>{{ task.priority }}</td> 
                 <td>{{ task.estimated_time }}</td> 
+                <td>{{ task.assign?.user?.name  }}</td> 
+                
                 <td>{{ task.status.status }}</td> 
-                <td class="text-center">
+                <td class="text-center" >
                     <router-link :to="'/user/tasks/show/'+task.id"  class="btn btn-sm">Show</router-link>
-                    <button @click="confirmDelete(task.id)" class="btn btn-sm btn-danger">Delete</button>
+                    <button  v-if="user.type === 'admin' || user.type === 'superadmin'" @click="confirmDelete(task.id)" class="btn btn-sm btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>
@@ -81,6 +86,9 @@ import { getProjects } from "../../../services/ProjectService";
 import { getTasks,deleteTask } from "../../../services/TaskService";
 
 export default {
+    props:{
+      user: Object
+    },
     setup() {
     const root = getCurrentInstance().proxy;
     const projects = ref([]);
@@ -95,7 +103,7 @@ export default {
 
     const fetchProjects = async() => {
       try {
-        projects.value = await getProjects();
+        projects.value = await getProjects(isPending);
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
