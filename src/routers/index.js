@@ -15,6 +15,7 @@ const routes = [
     { path: '/user/home', component:  () => import("../components/User/Home.vue"),  name: 'UserHome', meta: { requiresAuth: true }, },
     { path: '/user/tasks/create', component:  () => import("../components/User/Tasks/Create.vue"), meta: { requiresAuth: true }, },
     { path: '/user/tasks/show/:id', component:  () => import("../components/User/Tasks/Show.vue"), meta: { requiresAuth: true }, },
+    
     { path: '/admin/employees', component:  () => import("../components/Admin/Employees/Index.vue"),  meta: { requiresAuth: true }, },
     { path: '/admin/employees/create', component:  () => import("../components/Admin/Employees/Create.vue"),  meta: { requiresAuth: true }, },
     { path: '/admin/employees/edit/:id', component:  () => import("../components/Admin/Employees/Edit.vue"),  meta: { requiresAuth: true }, },
@@ -24,6 +25,10 @@ const routes = [
     { path: '/admin/projects/edit/:id', component:  () => import("../components/Admin/Projects/Edit.vue"),  meta: { requiresAuth: true }, },
 
     
+    { path: '/admin/users', component:  () => import("../components/Admin/Users/Index.vue"),  meta: { requiresAuth: true }, },
+    { path: '/admin/users/create', component:  () => import("../components/Admin/Users/Create.vue"),  meta: { requiresAuth: true }, },
+    { path: '/admin/users/edit/:id', component:  () => import("../components/Admin/Users/Edit.vue"),  meta: { requiresAuth: true }, },
+
     
 ];
 
