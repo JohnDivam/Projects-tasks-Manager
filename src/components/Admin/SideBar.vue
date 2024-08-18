@@ -1,14 +1,14 @@
 <template>
 <!-- links -->
     <ul class="list-unstyled px-0 links">
-    <li>
+    <li :class="{active: currectPath == '/admin/employees' }">
         <router-link to="/admin/employees"> Employees  </router-link>
     </li>
-    <li>
+    <li :class="{active: currectPath == '/admin/projects' }">
         <router-link to="/admin/projects"> Projects  </router-link>
     </li>
-    <li>
-        <router-link to="/admin/employees"> Permissions  </router-link>
+    <li :class="{active: currectPath == '/admin/users' }">
+        <router-link to="/admin/users"> Permissions  </router-link>
     </li>
 
     <li>
@@ -19,12 +19,18 @@
 </template>
 
 <script>
-import { useRouter, useRoute } from 'vue-router';
+import { computed, getCurrentInstance } from "vue"
 export default{
-    setup(props){
-        const route = useRoute();
+  methods: {
+  },
+    setup(){
+        const root = getCurrentInstance().proxy;
 
-        
+        const currectPath = computed(() => root.$route.fullPath || "");
+
+        return {
+            currectPath
+        }
     }
 }
 
