@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { isAuthenticated } from '../utils/auth';
+import { isAuthenticated, hasPermission } from '../utils/auth';
+import store from  '../store';
 
 const routes = [
     { path: '/', component:  () => import("../components/Pages/Welcome.vue"),  },
@@ -16,18 +17,18 @@ const routes = [
     { path: '/user/tasks/create', component:  () => import("../components/User/Tasks/Create.vue"), meta: { requiresAuth: true }, },
     { path: '/user/tasks/show/:id', component:  () => import("../components/User/Tasks/Show.vue"), meta: { requiresAuth: true }, },
     
-    { path: '/admin/employees', component:  () => import("../components/Admin/Employees/Index.vue"),  meta: { requiresAuth: true }, },
-    { path: '/admin/employees/create', component:  () => import("../components/Admin/Employees/Create.vue"),  meta: { requiresAuth: true }, },
-    { path: '/admin/employees/edit/:id', component:  () => import("../components/Admin/Employees/Edit.vue"),  meta: { requiresAuth: true }, },
+    { path: '/admin/employees', component:  () => import("../components/Admin/Employees/Index.vue"),  meta: { requiresAuth: true, requiredPermissions: ['Employees'] }, },
+    { path: '/admin/employees/create', component:  () => import("../components/Admin/Employees/Create.vue"),  meta: { requiresAuth: true, requiredPermissions: ['Employees'] }, },
+    { path: '/admin/employees/edit/:id', component:  () => import("../components/Admin/Employees/Edit.vue"),  meta: { requiresAuth: true, requiredPermissions: ['Employees'] }, },
 
-    { path: '/admin/projects', component:  () => import("../components/Admin/Projects/Index.vue"),  meta: { requiresAuth: true }, },
-    { path: '/admin/projects/create', component:  () => import("../components/Admin/Projects/Create.vue"),  meta: { requiresAuth: true }, },
-    { path: '/admin/projects/edit/:id', component:  () => import("../components/Admin/Projects/Edit.vue"),  meta: { requiresAuth: true }, },
+    { path: '/admin/projects', component:  () => import("../components/Admin/Projects/Index.vue"),  meta: { requiresAuth: true, requiredPermissions: ['Projects'] }, },
+    { path: '/admin/projects/create', component:  () => import("../components/Admin/Projects/Create.vue"),  meta: { requiresAuth: true, requiredPermissions: ['Projects'] }, },
+    { path: '/admin/projects/edit/:id', component:  () => import("../components/Admin/Projects/Edit.vue"),  meta: { requiresAuth: true, requiredPermissions: ['Projects'] }, },
 
     
-    { path: '/admin/users', component:  () => import("../components/Admin/Users/Index.vue"),  meta: { requiresAuth: true }, },
-    { path: '/admin/users/create', component:  () => import("../components/Admin/Users/Create.vue"),  meta: { requiresAuth: true }, },
-    { path: '/admin/users/edit/:id', component:  () => import("../components/Admin/Users/Edit.vue"),  meta: { requiresAuth: true }, },
+    { path: '/admin/users', component:  () => import("../components/Admin/Users/Index.vue"),  meta: { requiresAuth: true, requiredPermissions: ['Users'] }, },
+    { path: '/admin/users/create', component:  () => import("../components/Admin/Users/Create.vue"),  meta: { requiresAuth: true, requiredPermissions: ['Users'] }, },
+    { path: '/admin/users/edit/:id', component:  () => import("../components/Admin/Users/Edit.vue"),  meta: { requiresAuth: true, requiredPermissions: ['Users'] }, },
 
     
 ];
@@ -46,7 +47,19 @@ router.beforeEach((to, from, next) => {
           query: { redirect: to.fullPath },
         });
       } else {
-        next();
+        if (!store.getters['userModule/getUser'].length) {
+           store.dispatch('userModule/user', { endpoint: '/user-profile' });
+        }
+        if(to.meta.requiredPermissions){
+          console.log(store.getters['userModule/getUser']);
+          if (hasPermission(store.getters['userModule/getUser'], to.meta.requiredPermissions)) {
+              next();
+          } else {
+              next('/unauthorized');
+          }
+        }else{
+          next();
+        }
       }
     } else {
       next();
