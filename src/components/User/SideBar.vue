@@ -8,7 +8,7 @@
         <router-link :to="getStatusLink(status)">Tasks In {{ status }}</router-link>
     </li>
     <li v-if="user.type === 'admin' || user.type === 'superadmin'">
-        <router-link to="/admin/employees" class="bg-dark mt-3"> Admin panel </router-link>
+        <router-link to="/admin/home" class="bg-dark mt-3"> Admin panel </router-link>
     </li>
 </ul>
 <!-- end links -->

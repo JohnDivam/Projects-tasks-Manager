@@ -4,7 +4,8 @@ const userModule = {
     namespaced: true,
     state() {
         return {
-            user: {}
+            user: {},
+            permissions: [] 
         };  
     },
     getters:{
