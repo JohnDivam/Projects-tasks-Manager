@@ -7,7 +7,11 @@ export function hasPermission(user, permission) {
         return true;
     }
 
-    console.log(user);
-    return user.permissions.some(item =>item.name.includes(permission));
+    
+    if (!user?.permissions || !Array.isArray(user.permissions)) {
+        return false;
+    }
+
+    return user.permissions.some(item => item.name.includes(permission));
 
 }
