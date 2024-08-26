@@ -1,24 +1,18 @@
 <template>
-  <div class="row">
+  <div class="row mb-3">
      <div class="col-md-3">
-      <v-text-field
+      <input
           v-model="searchQuery"
-          label="Search Tasks"
-          outlined
-          dense
-        ></v-text-field>
+          placeholder="Search Tasks"
+          class="form-control"
+        >
     </div>
     <div class="col-md-3">
-      <v-select
-          :items="projects"
-          v-model="selectedProject"
-          label="Select a project"
-          item-title="name"
-          item-value="id"
-          outlined
-          dense
-          :disabled="isPending"
-      ></v-select>
+      
+      <select v-model="selectedProject"  :disabled="isPending" class="form-control">
+      <option value="" selected>All projects</option>
+      <option v-for="project in projects" :value="project.id" :key="project.id">{{project.name}}</option>
+    </select>
     </div>
     <div class="col-md-3">
       
@@ -39,7 +33,7 @@
             <th>Estimated Time</th>
             <th>Assign to</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th style="width:210px">Actions</th>
         </thead>
         <tbody>
             <tr v-if="isPending">
@@ -60,7 +54,8 @@
                 
                 <td>{{ task.status.status }}</td> 
                 <td class="text-center" >
-                    <router-link :to="'/user/tasks/show/'+task.id"  class="btn btn-sm">Show</router-link>
+                    <router-link :to="'/user/tasks/show/'+task.id"  class="btn btn-sm btn-success"> Show </router-link>
+                    <router-link :to="'/user/tasks/edit/'+task.id"  class="btn btn-sm btn-info mx-1 text-white"> Edit </router-link>
                     <button  v-if="user.type === 'admin' || user.type === 'superadmin'" @click="confirmDelete(task.id)" class="btn btn-sm btn-danger">Delete</button>
                 </td>
             </tr>
@@ -96,7 +91,7 @@ export default {
     const tasks = ref([]);
     const route = useRoute();
     const router = useRouter();
-    const selectedProject = ref(projects.value.find(project => project.id === newValue) || null);
+    const selectedProject = ref("");
     const searchQuery = ref(null);
     const currentPage = ref(1);
     const lastPage = ref(1);
