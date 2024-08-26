@@ -60,7 +60,6 @@ export async function getTasks(page, isPending, root){
     
 }
 
-
 export async function storeTask(taskData, isPending, root){
     isPending.value  = true;
     try {
