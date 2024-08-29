@@ -14,6 +14,8 @@
                 <option v-for="employee in employees" :key="employee.id" :value="employee.id" :selected="employee.id === task.assign_employee_id"  >{{employee.name}}</option>
             </select>
             <router-link  to="/user/home" class="btn btn-sm btn-secondary text-white float-right">Back</router-link>
+
+              <router-link :to="'/user/tasks/edit/'+task.id"  class="btn btn-sm btn-info mx-1 text-white"> Edit </router-link>
         </div>
         <div v-else class="ml-auto d-flex align-items-center">
             <v-btn  v-if="task.status == 'Backlog'" @click="handleStatusBtn('Progress')" type="button" :disabled="isPending" :loading="isPending" color="success" >

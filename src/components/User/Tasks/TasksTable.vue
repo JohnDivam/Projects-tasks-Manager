@@ -10,9 +10,9 @@
     <div class="col-md-3">
       
       <select v-model="selectedProject"  :disabled="isPending" class="form-control">
-      <option value="" selected>All projects</option>
-      <option v-for="project in projects" :value="project.id" :key="project.id">{{project.name}}</option>
-    </select>
+        <option value="" selected>All projects</option>
+        <option v-for="project in projects" :value="project.id" :key="project.id">{{project.name}}</option>
+      </select>
     </div>
     <div class="col-md-3">
       
