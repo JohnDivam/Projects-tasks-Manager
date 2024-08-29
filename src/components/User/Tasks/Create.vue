@@ -10,6 +10,15 @@
       <div class="card-body">
           <form @submit.prevent="createTask">
            <div class="row">
+            <div class="col-md-8">
+              <v-text-field
+                  v-model="formData.name"
+                  label="Task Name"
+                  required
+                  outlined
+                  dense
+              ></v-text-field>
+            </div>
             <div class="col-md-4">
                <v-select
                   v-model="formData.project_id"
@@ -21,15 +30,6 @@
                   dense
                   :disabled="isPending"
               ></v-select>
-            </div>
-            <div class="col-md-8">
-              <v-text-field
-                  v-model="formData.name"
-                  label="Task Name"
-                  required
-                  outlined
-                  dense
-              ></v-text-field>
             </div>
            </div>
             <v-textarea

@@ -186,4 +186,31 @@ export async function deleteTask(id){
 }
 
 
+export async function  update(id, taskData, isPending, root) {
+    isPending.value  = true;
+    try {
+        
+        const response = await axios.put('/tasks/'+id, taskData);
+        
+        if (response.status === 200 && response.data.status == true) {
+            toast.success(response.data.message, {
+                position: "top-right",
+                autoClose: 2000,
+            });
+
+            setTimeout(() => {
+                const redirect = root.$route.query.redirect || '/user/tasks/show/'+id;
+                root.$router.push(redirect);
+            }, 2000);
+        }
+
+    } catch (error) {
+        handleError(error);
+    } 
+    finally{
+        isPending.value  = false;
+    }
+    
+}
+
 
