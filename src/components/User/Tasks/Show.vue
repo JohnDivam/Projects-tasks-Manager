@@ -2,7 +2,10 @@
     <DashLayout page-title="Create task">
     
 <div class="container">
-    <div class="card">
+    <div v-if="isPending">
+        <v-skeleton-loader type="article,text, button" :loading="isPending"></v-skeleton-loader>
+    </div>
+    <div v-else class="card">
       <div class="card-header d-flex"> 
         <h4>{{ task.name }} <small>({{task.project_name}})</small> </h4> 
         <div  v-if="user.type === 'admin' || user.type === 'superadmin'" class="ml-auto d-flex align-items-center">
@@ -82,7 +85,7 @@ export default {
  
 
         const findTask = async() => {
-            const taskData = await getTask(route.params.id);
+            const taskData = await getTask(route.params.id, isPending);
             task.value = taskData.task;
             employees.value = taskData.employees;
         }

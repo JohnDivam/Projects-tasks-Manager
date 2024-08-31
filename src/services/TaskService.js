@@ -103,7 +103,8 @@ export async function storeTask(taskData, isPending, root){
     
 }
 
-export async function getTask(id){
+export async function getTask(id, isPending){
+    isPending.value = true;
     try {
         const response = await axios.get('/tasks/'+id);
         
@@ -114,6 +115,9 @@ export async function getTask(id){
     } catch (error) {
         handleError(error); 
     } 
+    finally{
+        isPending.value  = false;
+    }
 }
 
 export async function updateStatus(task_id, new_status, isPending){

@@ -55,7 +55,7 @@
                 <td>{{ task.status.status }}</td> 
                 <td class="text-center" >
                     <router-link :to="'/user/tasks/show/'+task.id"  class="btn btn-sm btn-success"> Show </router-link>
-                    <router-link :to="'/user/tasks/edit/'+task.id"  class="btn btn-sm btn-info mx-1 text-white"> Edit </router-link>
+                    <router-link  v-if="user.type === 'admin' || user.type === 'superadmin'"  :to="'/user/tasks/edit/'+task.id"  class="btn btn-sm btn-info mx-1 text-white"> Edit </router-link>
                     <button  v-if="user.type === 'admin' || user.type === 'superadmin'" @click="confirmDelete(task.id)" class="btn btn-sm btn-danger">Delete</button>
                 </td>
             </tr>

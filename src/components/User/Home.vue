@@ -33,10 +33,10 @@
     <div class="homePanel">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <SideBar  v-if="user.name" :statuses="statuses"  :user="user" />
             </div>
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <TasksTable :user="user" />
             </div>
         </div>

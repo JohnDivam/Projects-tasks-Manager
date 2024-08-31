@@ -8,7 +8,10 @@
           <router-link  to="/user/home" class="btn btn-sm btn-secondary text-white float-right">Back</router-link>
       </div>
       <div class="card-body">
-          <form @submit.prevent="edit">
+          <div v-if="isPending">
+          <v-skeleton-loader type="article,text, button" :loading="isPending"></v-skeleton-loader>
+          </div>
+          <form v-else @submit.prevent="edit">
            <div class="row">
             <div class="col-md-8">
               <v-text-field
@@ -197,7 +200,7 @@ export default {
 
     onMounted(async () => {
         await fetchProjects();
-         let res = await getTask(route.params.id);
+         let res = await getTask(route.params.id, isPending);
          if(res){
           let task = res.task;
           formData.value = {
