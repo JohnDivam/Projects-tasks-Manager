@@ -5,7 +5,7 @@
         <router-link  :to="getStatusLink('')"> All Tasks  </router-link>
     </li>
     <li v-for="status in statuses" :key="status" :class="{ active: currentStatus === status }" >
-        <router-link :to="getStatusLink(status)">Tasks In {{ status }}</router-link>
+        <router-link :to="getStatusLink(status)"> {{ status }}</router-link>
     </li>
     <li v-if="user.type === 'admin' || user.type === 'superadmin'">
         <router-link to="/admin/home" class="bg-dark mt-3"> Admin panel </router-link>

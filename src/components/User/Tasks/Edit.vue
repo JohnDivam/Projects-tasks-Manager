@@ -8,7 +8,10 @@
           <router-link  to="/user/home" class="btn btn-sm btn-secondary text-white float-right">Back</router-link>
       </div>
       <div class="card-body">
-          <form @submit.prevent="edit">
+          <div v-if="isPending">
+          <v-skeleton-loader type="article,text, button" :loading="isPending"></v-skeleton-loader>
+          </div>
+          <form v-else @submit.prevent="edit">
            <div class="row">
             <div class="col-md-8">
               <v-text-field
@@ -66,24 +69,13 @@
                 <v-row>
                   <v-col>
                     <v-text-field
-                      v-model="formData.hours"
-                      label="Hour"
-                      type="number"
-                      min="0"
-                      max="23"
+                      v-model="formData.estimated_time"
+                      label="Estimated time"
+                      type="time"
                       outlined
                     ></v-text-field>
                   </v-col>
-                  <v-col>
-                    <v-text-field
-                      v-model="formData.minutes"
-                      label="Minute"
-                      type="number"
-                      min="0"
-                      max="59"
-                      outlined
-                    ></v-text-field>
-                  </v-col>
+                   
                 </v-row>
             </div>
            </div>
@@ -143,8 +135,7 @@ export default {
       description: '',
       type: 'Feature',
       priority: 'Normal',
-      hours: null,
-      minutes: null,
+      estimated_time: "00:00",
       files: [],  
     });
     const taskTypes = ref(["Bug", "Feature"]);
@@ -166,8 +157,7 @@ export default {
       formDataToSend.append('description', formData.value.description);
       formDataToSend.append('type', formData.value.type);
       formDataToSend.append('priority', formData.value.priority);
-      formDataToSend.append('hours', formData.value.hours);
-      formDataToSend.append('minutes', formData.value.minutes);
+      formDataToSend.append('estimated_time', formData.value.estimated_time);
       if (formData.value.files && formData.value.files.length > 0) {
          const fileBase64Promises = formData.value.files.map(async (file) => {
             const base64File = await convertFileToBase64(file);
@@ -197,7 +187,7 @@ export default {
 
     onMounted(async () => {
         await fetchProjects();
-         let res = await getTask(route.params.id);
+         let res = await getTask(route.params.id, isPending);
          if(res){
           let task = res.task;
           formData.value = {
@@ -206,8 +196,7 @@ export default {
               description: task.description,
               type: task.type,
               priority: task.priority,
-              hours: task.hours,
-              minutes: task.minutes,
+              estimated_time: task.estimated_time,
           };
 
           taskFiles.value = task.files;

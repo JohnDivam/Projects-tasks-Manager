@@ -11,8 +11,9 @@ export async function getTasks(page, isPending, root){
             params: {
                 'page' : page,
                 'project_id': root.$route.query.project_id,
+                'search': root.$route.query.search,
                 'status': root.$route.query.status,
-                'search': root.$route.query.search
+                'priority': root.$route.query.priority,
             }
         });
         
@@ -86,10 +87,10 @@ export async function storeTask(taskData, isPending, root){
                 autoClose: 2000,
             });
 
-            setTimeout(() => {
+            /*setTimeout(() => {
                 const redirect = root.$route.query.redirect || '/user/home';
                 root.$router.push(redirect);
-            }, 2000);
+            }, 2000);*/
         }
 
     } catch (error) {
@@ -103,7 +104,8 @@ export async function storeTask(taskData, isPending, root){
     
 }
 
-export async function getTask(id){
+export async function getTask(id, isPending){
+    isPending.value = true;
     try {
         const response = await axios.get('/tasks/'+id);
         
@@ -114,14 +116,18 @@ export async function getTask(id){
     } catch (error) {
         handleError(error); 
     } 
+    finally{
+        isPending.value  = false;
+    }
 }
 
-export async function updateStatus(task_id, new_status, isPending){
+export async function updateStatus(task_id, new_status, estimated_time, isPending){
     isPending.value  = true;
     try {
        
         const response = await axios.post('/tasks/update-status/'+task_id,{
-            'new_status': new_status
+            'new_status': new_status,
+            'estimated_time': estimated_time
         });
         
         if (response.status === 200 && response.data.status == true) {
@@ -198,10 +204,10 @@ export async function  update(id, taskData, isPending, root) {
                 autoClose: 2000,
             });
 
-            setTimeout(() => {
+            /*setTimeout(() => {
                 const redirect = root.$route.query.redirect || '/user/tasks/show/'+id;
                 root.$router.push(redirect);
-            }, 2000);
+            }, 2000);*/
         }
 
     } catch (error) {
