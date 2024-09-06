@@ -20,15 +20,6 @@
 
               <router-link :to="'/user/tasks/edit/'+task.id"  class="btn btn-sm btn-info mx-1 text-white"> Edit </router-link>
         </div>
-        <div v-else class="ml-auto d-flex align-items-center">
-            <v-btn  v-if="task.status == 'Backlog'" @click="handleStatusBtn('Progress')" type="button" :disabled="isPending" :loading="isPending" color="success" >
-                Start progress!
-            </v-btn>
-             <v-btn  v-if="task.status == 'Progress'" @click="handleStatusBtn('ReadyForTesting')" type="button" :disabled="isPending" :loading="isPending" color="warning" >
-                Finish!
-            </v-btn>
-
-        </div>
       </div>
       <div class="card-body">
             <div class="row">
@@ -45,10 +36,31 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <ul>
+                    <ul  v-if="user.type === 'admin' || user.type === 'superadmin'">
                         <li>Created at: {{task.created_at}}</li>
-                        <li>Estimated time: {{task.estimated_time}}</li>                        
+                        <li>Estimated time: {{task.estimated_time}}</li>
+                        <li>Start at: {{task.start_at}}</li>
+                        <li>End at: {{task.end_at}}</li>       
                     </ul>
+                    <div v-else>
+                         <v-text-field
+                                v-model="task.estimated_time"
+                                label="Estimated time"
+                                type="time"
+                                outlined
+                                :disabled="task.status != 'Backlog'"
+                            ></v-text-field>
+                           <v-btn  v-if="task.status == 'Backlog'" @click="handleStatusBtn('Progress')" type="button" :disabled="isPending" :loading="isPending" color="success" >
+                                Start progress!
+                            </v-btn>
+
+                            <h5 v-if="task.start_at" >Start at: {{task.start_at}}</h5>
+                            <h5 v-if="task.end_at" >End at: {{task.end_at}}</h5>
+                            <v-btn  v-if="task.status == 'Progress'" @click="handleStatusBtn('ReadyForTesting')" type="button" :disabled="isPending" :loading="isPending" color="warning" >
+                                Finish!
+                            </v-btn>
+
+                    </div>
                 </div>
             </div>
       </div>
@@ -100,7 +112,7 @@ export default {
         };
 
         const handleStatusBtn = async(new_status) => {
-            task.value.status = await updateStatus(route.params.id, new_status, isPending);
+            task.value.status = await updateStatus(route.params.id, new_status, task.value.estimated_time, isPending);
         };
         
         const handleAssignToChange = async(event) => {
@@ -124,7 +136,7 @@ export default {
             handleStatusChange,
             employees,
             handleAssignToChange,
-            handleStatusBtn
+            handleStatusBtn,
         };
     }
 }

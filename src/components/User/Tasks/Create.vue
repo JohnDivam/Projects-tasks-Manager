@@ -72,24 +72,13 @@
                 <v-row>
                   <v-col>
                     <v-text-field
-                      v-model="formData.hours"
-                      label="Hour"
-                      type="number"
-                      min="0"
-                      max="23"
+                      v-model="formData.estimated_time"
+                      label="Estimated time"
+                      type="time"
                       outlined
                     ></v-text-field>
                   </v-col>
-                  <v-col>
-                    <v-text-field
-                      v-model="formData.minutes"
-                      label="Minute"
-                      type="number"
-                      min="0"
-                      max="59"
-                      outlined
-                    ></v-text-field>
-                  </v-col>
+                  
                 </v-row>
             </div>
            </div>
@@ -135,8 +124,7 @@ export default {
       description: '',
       type: 'Feature',
       priority: 'Normal',
-      hours: null,
-      minutes: null,
+      estimated_time: "00:00",
       files: null,  
     });
     const taskTypes = ref(["Bug", "Feature"]);

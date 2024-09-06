@@ -7,16 +7,19 @@
           class="form-control"
         >
     </div>
-    <div class="col-md-3">
-      
+    <div class="col-md-2">
       <select v-model="selectedProject"  :disabled="isPending" class="form-control">
         <option value="" selected>All projects</option>
         <option v-for="project in projects" :value="project.id" :key="project.id">{{project.name}}</option>
       </select>
     </div>
-    <div class="col-md-3">
-      
+     <div class="col-md-2">
+      <select v-model="selectedPriority"  :disabled="isPending" class="form-control">
+        <option value="" selected>All priorities</option>
+        <option v-for="priority in priorities" :value="priority" :key="priority">{{priority}}</option>
+      </select>
     </div>
+    <div class="col-md-2"></div>
     <div  v-if="user.type === 'admin' || user.type === 'superadmin'" class="col-md-3 text-right">
       <router-link  to="/user/tasks/create"  class="btn btn-sm btn-success">Create Task</router-link>
     </div>
@@ -30,8 +33,8 @@
             <th>Name</th>
             <th>Project</th>
             <th>Priority</th>
-            <th>Estimated Time</th>
-            <th>Assign to</th>
+            <th>Hours</th>
+            <th>Assign</th>
             <th>Status</th>
             <th style="width:210px">Actions</th>
         </thead>
@@ -48,7 +51,7 @@
                 <td>{{ task.id }}</td>
                 <td>{{ task.name }}</td> 
                 <td>{{ task.project?.name }}</td> 
-                <td>{{ task.priority }}</td> 
+                <td> <span :class="'badge badge-'+task.priority_color">{{ task.priority }}</span> </td> 
                 <td>{{ task.estimated_time }}</td> 
                 <td>{{ task.assign?.user?.name  }}</td> 
                 
@@ -95,14 +98,16 @@ export default {
     const searchQuery = ref(null);
     const currentPage = ref(1);
     const lastPage = ref(1);
+    const priorities = ref(["Low", "Normal", "High", "Urgent", "Critical"]);
+    const selectedPriority = ref("");
 
     const fetchProjects = async() => {
-      try {
-        projects.value = await getProjects(isPending);
-      } catch (error) {
-        console.error('Error fetching projects:', error);
+        try {
+          projects.value = await getProjects(isPending);
+        } catch (error) {
+          console.error('Error fetching projects:', error);
+        }
       }
-    }
 
     const fetchTasks = async(page = 1) => {
         const response = await getTasks(page, isPending,  root);
@@ -138,6 +143,8 @@ export default {
       searchQuery.value = newValue;
       fetchTasks();
     });
+    watch(() => root.$route.query.status,(newValue) => fetchTasks());
+    watch(() => root.$route.query.priority,(newValue) => fetchTasks());
 
     watch(searchQuery, (newValue) => {
         if(newValue != root.$route.query.search){
@@ -151,6 +158,12 @@ export default {
       }
     });
 
+    watch(selectedPriority, (newValue) => {
+      if(newValue != root.$route.query.priority){
+        router.push({ name: 'UserHome', query: {  ...route.query, 'priority': newValue } });
+      }
+    });
+
     return {
         selectedProject,
         projects,
@@ -161,7 +174,9 @@ export default {
         lastPage,
         changePage,
         searchQuery,
-        confirmDelete
+        confirmDelete,
+        priorities,
+        selectedPriority
       };
     }
 }
