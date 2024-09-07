@@ -149,7 +149,6 @@ export async function updateStatus(task_id, new_status, estimated_time, isPendin
     
 }
 
-
 export async function assignTaskTo(task_id, employee_id, isPending){
     isPending.value  = true;
     try {
@@ -191,7 +190,6 @@ export async function deleteTask(id){
     } 
 }
 
-
 export async function  update(id, taskData, isPending, root) {
     isPending.value  = true;
     try {
@@ -217,6 +215,34 @@ export async function  update(id, taskData, isPending, root) {
         isPending.value  = false;
     }
     
+}
+
+
+export async function storeComment(task_id, new_comment, isPending){
+    isPending.value  = true;
+    try {
+       
+        const response = await axios.post('/tasks/storeComment/'+task_id,{
+            'new_comment': new_comment.value
+        });
+        
+        if (response.status === 200 && response.data.status == true) {
+            toast.success(response.data.message, {
+                position: "top-right",
+                autoClose: 2000,
+            });
+
+            new_comment.value ="";
+
+            return response.data.comments
+        }
+
+    } catch (error) {
+        handleError(error); 
+    } 
+    finally{
+        isPending.value  = false;
+    }    
 }
 
 

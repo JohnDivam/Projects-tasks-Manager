@@ -70,6 +70,54 @@
       </div>
       
     </div>
+
+ 
+    <div class="mt-4">
+        <v-card>
+            <v-card-title>
+            <span class="text-h6">Comments</span>
+            </v-card-title>
+            <v-card-text>
+            <!-- Comment List -->
+            <v-card
+                v-for="comment in task.comments"
+                :key="comment.id"
+                class="mb-3"
+                outlined
+            >
+                <v-card-text class="d-flex justify-space-between align-center">
+                <span>{{ comment.comment }}</span>
+                <small class="text-muted">
+                    ({{ comment.user.name }}) {{ formatDate(comment.created_at) }}
+                </small>
+                </v-card-text>
+            </v-card>
+
+            <!-- New Comment Form -->
+            <v-form @submit.prevent="createComment">
+                <v-textarea
+                v-model="new_comment"
+                label="Write a comment..."
+                required
+                outlined
+                dense
+                class="mt-3"
+                ></v-textarea>
+                <v-btn
+                type="submit"
+                :disabled="isPending"
+                :loading="isPending"
+                color="primary"
+                block
+                class="mt-2"
+                >
+                Submit Comment
+                </v-btn>
+            </v-form>
+            </v-card-text>
+        </v-card>
+    </div>
+
 </div>
 
 
@@ -81,7 +129,7 @@ import DashLayout from '../../layouts/DashLayout.vue';
 import { computed, ref, getCurrentInstance, onMounted, watch  } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from 'vue-router';
-import { getTask, updateStatus, assignTaskTo } from "../../../services/TaskService";
+import { getTask, updateStatus, assignTaskTo, storeComment } from "../../../services/TaskService";
 
 export default {
     components:{
@@ -94,7 +142,7 @@ export default {
         const task = ref({});
         const route = useRoute();
         const employees = ref([]);
- 
+        const new_comment = ref(""); 
 
         const findTask = async() => {
             const taskData = await getTask(route.params.id, isPending);
@@ -119,6 +167,20 @@ export default {
             task.value.assign_employee_id = await assignTaskTo(route.params.id, event.target.value, isPending);
         };
 
+        const createComment = async() => {
+            task.value.comments = await storeComment(route.params.id, new_comment, isPending);
+        }
+
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        };
+
 
         onMounted(async () => {
             await findTask();
@@ -137,6 +199,9 @@ export default {
             employees,
             handleAssignToChange,
             handleStatusBtn,
+            new_comment,
+            createComment,
+            formatDate
         };
     }
 }
