@@ -50,7 +50,7 @@
                                 outlined
                                 :disabled="task.status != 'Backlog'"
                             ></v-text-field>
-                           <v-btn  v-if="task.status == 'Backlog'" @click="handleStatusBtn('Progress')" type="button" :disabled="isPending" :loading="isPending" color="success" >
+                           <v-btn  v-if="['Backlog','Disapproved'].includes(task.status)" @click="handleStatusBtn('Progress')" type="button" :disabled="isPending" :loading="isPending" color="success" >
                                 Start progress!
                             </v-btn>
 
@@ -118,6 +118,31 @@
         </v-card>
     </div>
 
+
+     <div class="mt-4">
+        <v-card>
+            <v-card-title>
+            <span class="text-h6">History</span>
+            </v-card-title>
+            <v-card-text>
+            <!-- Comment List -->
+            <v-card
+                v-for="status in task.statuses"
+                :key="status.id"
+                class="mb-3"
+                outlined
+            >
+                <v-card-text class="d-flex justify-space-between align-center">
+                <span>{{ status.status }}</span>
+                <small class="text-muted">
+                    ({{ status.user.name }}) {{ formatDate(status.created_at) }}
+                </small>
+                </v-card-text>
+            </v-card>
+            </v-card-text>
+        </v-card>
+     </div>
+
 </div>
 
 
@@ -156,7 +181,7 @@ export default {
         };
 
         const handleStatusChange = async(event) => {
-            task.value.status = await updateStatus(route.params.id, event.target.value, isPending);
+            task.value.status = await updateStatus(route.params.id, event.target.value, null, isPending);
         };
 
         const handleStatusBtn = async(new_status) => {
