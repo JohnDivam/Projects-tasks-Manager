@@ -7,11 +7,11 @@ const routes = [
     { path: '/', component:  () => import("../components/Pages/Welcome.vue"),  },
     { path: '/login', component:  () => import("../components/Pages/Auth/Login.vue"),  
       beforeEnter: (to, from, next) => {
-        if (isAuthenticated()) {
+       /* if (isAuthenticated()) {
           next({ path: '/user/home' });
-        } else {
+        } else {*/
           next();
-        }
+       // }
       }  
     },
     { path: '/user/home', component:  () => import("../components/User/Home.vue"),  name: 'UserHome', meta: { requiresAuth: true }, },

@@ -1,6 +1,9 @@
 <template>
 <!-- links -->
     <ul class="list-unstyled px-0 links">
+    <li :class="{active: currectPath == '/admin/home' }">
+        <router-link to="/admin/home"> Home  </router-link>
+    </li>
     <li :class="{active: currectPath == '/admin/employees' }"  v-if="checkPermission('Employees')">
         <router-link to="/admin/employees"> Employees  </router-link>
     </li>

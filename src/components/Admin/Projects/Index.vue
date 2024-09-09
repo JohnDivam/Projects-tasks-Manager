@@ -8,38 +8,44 @@
                     <SideBar />
                 </div>
                 <div class="col-md-9">
-                    <div class="text-right">
-                        <router-link to="/admin/projects/create" class="btn btn-success mb-2"> Add </router-link>
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Projects</span>
+                            <router-link to="/admin/projects/create" class="btn btn-success btn-sm float-right"> Add </router-link>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-boordered table-hover bg-white">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Logo</th>
+                                        <th class="text-center">Actions</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-if="isPending">
+                                            <td colspan="6">
+                                                <v-skeleton-loader type="table-row" :loading="isPending"></v-skeleton-loader>
+                                            </td>
+                                        </tr>
+                                        <tr v-else-if="projects.length === 0">
+                                            <td colspan="5" class="text-center">No projects found</td>
+                                        </tr>
+                                        <tr else v-for="(project) in projects" :key="project.id">
+                                            <td>{{ project.id }}</td>
+                                            <td>{{ project.name }}</td> 
+                                            <td> <img :src="project.logo" alt="" height="50"> </td> 
+                                            <td class="text-center">
+                                                <router-link :to="'/admin/projects/edit/'+project.id"  class="btn btn-sm">Edit</router-link>
+                                                <button @click="confirmDelete(project.id)" class="btn btn-sm btn-danger">Delete</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-boordered table-hover bg-white">
-                            <thead>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Logo</th>
-                                <th>Actions</th>
-                            </thead>
-                            <tbody>
-                                <tr v-if="isPending">
-                                    <td colspan="6">
-                                        <v-skeleton-loader type="table-row" :loading="isPending"></v-skeleton-loader>
-                                    </td>
-                                </tr>
-                                <tr v-else-if="projects.length === 0">
-                                    <td colspan="5" class="text-center">No projects found</td>
-                                </tr>
-                                <tr else v-for="(project) in projects" :key="project.id">
-                                    <td>{{ project.id }}</td>
-                                    <td>{{ project.name }}</td> 
-                                    <td> <img :src="project.logo" alt="" height="50"> </td> 
-                                    <td class="text-center">
-                                        <router-link :to="'/admin/projects/edit/'+project.id"  class="btn btn-sm">Edit</router-link>
-                                        <button @click="confirmDelete(project.id)" class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    
 
                 </div>
             </div>

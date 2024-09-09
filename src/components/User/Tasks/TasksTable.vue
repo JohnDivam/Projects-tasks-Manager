@@ -26,7 +26,9 @@
   </div>
   <!-- end row -->
   
-  <div class="table-responsive">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
     <table class="table table-boordered table-hover bg-white">
         <thead>
             <th>#</th>
@@ -40,18 +42,18 @@
         </thead>
         <tbody>
             <tr v-if="isPending">
-              <td colspan="6">
+              <td colspan="8">
                 <v-skeleton-loader type="table-row" :loading="isPending"></v-skeleton-loader>
               </td>
             </tr>
             <tr v-else-if="tasks.length === 0">
-              <td colspan="6" class="text-center">No tasks found</td>
+              <td colspan="8" class="text-center">No tasks found</td>
             </tr>
             <tr v-else v-for="(task) in tasks" :key="task.id">
                 <td>{{ task.id }}</td>
                 <td>{{ task.name }}</td> 
                 <td>{{ task.project?.name }}</td> 
-                <td> <span :class="'badge badge-'+task.priority_color">{{ task.priority }}</span> </td> 
+                <td> <span :class="'badge bg-'+task.priority_color">{{ task.priority }}</span> </td> 
                 <td>{{ task.estimated_time }}</td> 
                 <td>{{ task.assign?.user?.name  }}</td> 
                 
@@ -74,6 +76,9 @@
         rounded="circle"
       ></v-pagination>
   </div>
+    </div>
+  </div>
+  
 
 </template>
 

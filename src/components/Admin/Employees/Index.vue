@@ -8,39 +8,44 @@
                     <SideBar />
                 </div>
                 <div class="col-md-9">
-                    <div class="text-right">
-                        <router-link to="/admin/employees/create" class="btn btn-success mb-2"> Add </router-link>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-boordered table-hover bg-white">
-                            <thead>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Actions</th>
-                            </thead>
-                            <tbody>
-                                 <tr v-if="isPending">
-                                    <td colspan="6">
-                                        <v-skeleton-loader type="table-row" :loading="isPending"></v-skeleton-loader>
-                                    </td>
-                                </tr>
-                                <tr v-else-if="employees.length === 0">
-                                <td colspan="5" class="text-center">No employees found</td>
-                                </tr>
-                                <tr else v-for="(employee) in employees" :key="employee.id">
-                                    <td>{{ employee.id }}</td>
-                                    <td>{{ employee.name }}</td> 
-                                    <td>{{ employee.email }}</td> 
-                                    <td>{{ employee.phone }}</td> 
-                                    <td class="text-center">
-                                        <router-link :to="'/admin/employees/edit/'+employee.id"  class="btn btn-sm">Edit</router-link>
-                                        <button @click="confirmDelete(employee.id)" class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Employees</span>
+                            <router-link to="/admin/employees/create" class="btn btn-success btn-sm float-right"> Add </router-link>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-boordered table-hover bg-white">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th class="text-center">Actions</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-if="isPending">
+                                            <td colspan="6">
+                                                <v-skeleton-loader type="table-row" :loading="isPending"></v-skeleton-loader>
+                                            </td>
+                                        </tr>
+                                        <tr v-else-if="employees.length === 0">
+                                        <td colspan="5" class="text-center">No employees found</td>
+                                        </tr>
+                                        <tr else v-for="(employee) in employees" :key="employee.id">
+                                            <td>{{ employee.id }}</td>
+                                            <td>{{ employee.name }}</td> 
+                                            <td>{{ employee.email }}</td> 
+                                            <td>{{ employee.phone }}</td> 
+                                            <td class="text-center">
+                                                <router-link :to="'/admin/employees/edit/'+employee.id"  class="btn btn-sm">Edit</router-link>
+                                                <button @click="confirmDelete(employee.id)" class="btn btn-sm btn-danger">Delete</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
                     <v-pagination

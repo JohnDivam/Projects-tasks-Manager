@@ -71,77 +71,85 @@
       
     </div>
 
- 
-    <div class="mt-4">
-        <v-card>
-            <v-card-title>
-            <span class="text-h6">Comments</span>
-            </v-card-title>
-            <v-card-text>
-            <!-- Comment List -->
-            <v-card
-                v-for="comment in task.comments"
-                :key="comment.id"
-                class="mb-3"
-                outlined
-            >
-                <v-card-text class="d-flex justify-space-between align-center">
-                <span>{{ comment.comment }}</span>
-                <small class="text-muted">
-                    ({{ comment.user.name }}) {{ formatDate(comment.created_at) }}
-                </small>
-                </v-card-text>
-            </v-card>
+    <div class="row">
+        <div class="col-md-6">
 
-            <!-- New Comment Form -->
-            <v-form @submit.prevent="createComment">
-                <v-textarea
-                v-model="new_comment"
-                label="Write a comment..."
-                required
-                outlined
-                dense
-                class="mt-3"
-                ></v-textarea>
-                <v-btn
-                type="submit"
-                :disabled="isPending"
-                :loading="isPending"
-                color="primary"
-                block
-                class="mt-2"
-                >
-                Submit Comment
-                </v-btn>
-            </v-form>
-            </v-card-text>
-        </v-card>
+        <div class="mt-4">
+                <v-card>
+                    <v-card-title>
+                    <span class="text-h6">Comments</span>
+                    </v-card-title>
+                    <v-card-text>
+                    <!-- Comment List -->
+                    <v-card
+                        v-for="comment in task.comments"
+                        :key="comment.id"
+                        class="mb-3"
+                        outlined
+                    >
+                        <v-card-text class="d-flex justify-space-between align-center " style="background: #eee">
+                        <span>{{ comment.comment }}</span>
+                        <small class="text-muted">
+                            ({{ comment.user.name }}) {{ formatDate(comment.created_at) }}
+                        </small>
+                        </v-card-text>
+                    </v-card>
+
+                    <!-- New Comment Form -->
+                    <v-form @submit.prevent="createComment">
+                        <v-textarea
+                        v-model="new_comment"
+                        label="Write a comment..."
+                        required
+                        outlined
+                        dense
+                        class="mt-3"
+                        ></v-textarea>
+                        <v-btn
+                        type="submit"
+                        :disabled="isPending"
+                        :loading="isPending"
+                        color="primary"
+                        block
+                        class="mt-2"
+                        >
+                        Submit Comment
+                        </v-btn>
+                    </v-form>
+                    </v-card-text>
+                </v-card>
+            </div>
+
+        </div>
+         <div class="col-md-6">
+         
+
+            <div class="mt-4">
+                <v-card>
+                    <v-card-title>
+                    <span class="text-h6">History</span>
+                    </v-card-title>
+                    <v-card-text>
+                    <!-- Comment List -->
+                    <v-card
+                        v-for="status in task.statuses"
+                        :key="status.id"
+                        class="mb-3"
+                        outlined
+                    >
+                        <v-card-text class="d-flex justify-space-between align-center">
+                        <span>{{ status.status }}</span>
+                        <small class="text-muted">
+                            ({{ status.user.name }}) {{ formatDate(status.created_at) }}
+                        </small>
+                        </v-card-text>
+                    </v-card>
+                    </v-card-text>
+                </v-card>
+            </div>
+            
+        </div>
     </div>
-
-
-     <div class="mt-4">
-        <v-card>
-            <v-card-title>
-            <span class="text-h6">History</span>
-            </v-card-title>
-            <v-card-text>
-            <!-- Comment List -->
-            <v-card
-                v-for="status in task.statuses"
-                :key="status.id"
-                class="mb-3"
-                outlined
-            >
-                <v-card-text class="d-flex justify-space-between align-center">
-                <span>{{ status.status }}</span>
-                <small class="text-muted">
-                    ({{ status.user.name }}) {{ formatDate(status.created_at) }}
-                </small>
-                </v-card-text>
-            </v-card>
-            </v-card-text>
-        </v-card>
-     </div>
 
 </div>
 
